@@ -7,8 +7,8 @@ import com.github.copiousdogs.content.CopiousDogsBlocks;
 import com.github.copiousdogs.content.CopiousDogsItems;
 import com.github.copiousdogs.content.CopiousDogsTileEntities;
 import com.github.copiousdogs.lib.Reference;
-import com.github.copiousdogs.network.MessageTileEntity;
-import com.github.copiousdogs.network.TileEntityUpdateHandler;
+import com.github.copiousdogs.network.DogDishHandler;
+import com.github.copiousdogs.network.MessageDogDish;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -47,7 +47,7 @@ public class CopiousDogs
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		snw = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.CHANNEL_NAME);
-		snw.registerMessage(TileEntityUpdateHandler.class, MessageTileEntity.class, 0, Side.SERVER);
+		snw.registerMessage(DogDishHandler.class, MessageDogDish.class, 0, Side.CLIENT);
 		
 		CopiousDogsItems.init();
 		CopiousDogsBlocks.init();

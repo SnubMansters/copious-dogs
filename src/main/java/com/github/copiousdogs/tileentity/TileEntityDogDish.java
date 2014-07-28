@@ -3,10 +3,11 @@ package com.github.copiousdogs.tileentity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 
 import com.github.copiousdogs.CopiousDogs;
-import com.github.copiousdogs.network.MessageTileEntity;
+import com.github.copiousdogs.network.MessageDogDish;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -17,6 +18,7 @@ public class TileEntityDogDish extends TileEntity
 	private int prevFoodLevel = 0;
 
 	private int maxFoodLevel = 30;
+	private int ticks = 0;
 	
 	public TileEntityDogDish()
 	{
@@ -30,26 +32,35 @@ public class TileEntityDogDish extends TileEntity
 
 	public void setFoodLevel(int par0)
 	{
-
-		System.out.println(par0);
 		foodLevel = par0;
+		sendChange();
 	}
 
 	public int getMaxFoodLevel()
 	{
-
 		return maxFoodLevel;
 	}
-
+	
+	@Override
+	public Packet getDescriptionPacket()
+	{
+		sendChange();
+		return super.getDescriptionPacket();
+	}
+	
 	@Override
 	public void updateEntity()
 	{
-
 		super.updateEntity();
-
+		
 		if (foodLevel != prevFoodLevel)
 		{
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			sendChange();
+		}
+		
+		if (this.blockMetadata != worldObj.getBlockMetadata(xCoord, yCoord, zCoord)) {
+			this.blockMetadata = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 		}
 
 		prevFoodLevel = foodLevel;
@@ -70,22 +81,15 @@ public class TileEntityDogDish extends TileEntity
 	{
 		Side side = FMLCommonHandler.instance().getEffectiveSide();
 
-		if (side == Side.CLIENT)
+		if (side == Side.SERVER)
 		{
-			CopiousDogs.snw.sendToServer(new MessageTileEntity(this));
-		}
-		else if (side == Side.SERVER)
-		{
-			CopiousDogs.snw.sendToAll(new MessageTileEntity(this));
+			markDirty();
+			CopiousDogs.snw.sendToAll(new MessageDogDish(this));
 		}
 	}
-
+	
 	public boolean addFood(ItemStack stack)
 	{
-
-		System.out.println(foodLevel + "    "
-				+ FMLCommonHandler.instance().getEffectiveSide());
-
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
 		{
 

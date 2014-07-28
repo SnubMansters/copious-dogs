@@ -25,7 +25,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockDogDish extends BlockContainer
 {
 	private Icon[] icons;
-
+	
 	public BlockDogDish()
 	{
 		super(Material.leaves);
@@ -51,6 +51,11 @@ public class BlockDogDish extends BlockContainer
 		blockIcon = register.registerIcon(Reference.MOD_ID + ":dogDish");
 	}
 
+	public static String getTexture() {
+		
+		return "dogDish";
+	}
+	
 	@Override
 	public boolean renderAsNormalBlock()
 	{
@@ -84,10 +89,9 @@ public class BlockDogDish extends BlockContainer
 				.getTileEntity(par2, par3, par4);
 
 		ItemStack stack = entity.getCurrentEquippedItem();
-
+		
 		if (stack != null)
 		{
-
 			boolean foodAdded = tileEntity.addFood(stack);
 
 			if (foodAdded && !entity.capabilities.isCreativeMode)

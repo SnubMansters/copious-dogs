@@ -1,3 +1,7 @@
+#Creative tabs
 itemGroup.tabCopiousDogs=Copious Dogs
+
+#Items
 item.copiousdogs.dogBiscuit.name=Dog Biscuit
 item.copiousdogs.dogCollar.name=Dog Collar
+item.copiousdogs.dogDish.name=Dog Dish

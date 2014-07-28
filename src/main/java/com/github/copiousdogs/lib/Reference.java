@@ -1,5 +1,7 @@
 package com.github.copiousdogs.lib;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 public class Reference 
 {
 	public static final String MOD_ID = "copiousdogs";
