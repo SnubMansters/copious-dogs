@@ -59,7 +59,8 @@ public class TileEntityDogDish extends TileEntity
 			sendChange();
 		}
 		
-		if (this.blockMetadata != worldObj.getBlockMetadata(xCoord, yCoord, zCoord)) {
+		if (this.blockMetadata != worldObj.getBlockMetadata(xCoord, yCoord, zCoord)) 
+		{
 			this.blockMetadata = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 		}
 
@@ -103,16 +104,17 @@ public class TileEntityDogDish extends TileEntity
 
 				if (foodLevel >= maxFoodLevel)
 				{
-
 					sendChange();
 					return false;
-				} else if (foodLevel + foodAmount > maxFoodLevel)
+				} 
+				else if (foodLevel + foodAmount > maxFoodLevel)
 				{
 
 					foodLevel = maxFoodLevel;
 					sendChange();
 					return true;
-				} else
+				} 
+				else
 				{
 
 					foodLevel += foodAmount;
@@ -156,14 +158,12 @@ public class TileEntityDogDish extends TileEntity
 
 	public boolean canEat(float amount)
 	{
-
 		return foodLevel - amount >= 0;
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound par1nbtTagCompound)
 	{
-
 		super.writeToNBT(par1nbtTagCompound);
 
 		par1nbtTagCompound.setInteger("FoodLevel", foodLevel);
@@ -172,7 +172,6 @@ public class TileEntityDogDish extends TileEntity
 	@Override
 	public void readFromNBT(NBTTagCompound par1nbtTagCompound)
 	{
-
 		super.readFromNBT(par1nbtTagCompound);
 
 		foodLevel = par1nbtTagCompound.getInteger("FoodLevel");

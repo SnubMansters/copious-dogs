@@ -1,12 +1,12 @@
 package com.github.copiousdogs.client.model.block;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
+
+import org.lwjgl.opengl.GL11;
 
 import com.github.copiousdogs.block.BlockDogDish;
 import com.github.copiousdogs.lib.Reference;

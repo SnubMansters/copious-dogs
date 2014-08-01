@@ -5,3 +5,7 @@ itemGroup.tabCopiousDogs=Copious Dogs
 item.copiousdogs.dogBiscuit.name=Dog Biscuit
 item.copiousdogs.dogCollar.name=Dog Collar
 item.copiousdogs.dogDish.name=Dog Dish
+
+#Entities
+entity.copiousdogs.beagle.name=Beagle
+entity.copiousdogs.bernese_mountain.name=Bernese Mountain
