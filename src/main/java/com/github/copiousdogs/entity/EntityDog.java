@@ -9,6 +9,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAISit;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
@@ -22,6 +23,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 import com.github.copiousdogs.content.CopiousDogsItems;
+import com.github.copiousdogs.entity.ai.EntityAIEatDogDish;
 import com.github.copiousdogs.entity.ai.EntityAIMateNearTorch;
 import com.github.copiousdogs.item.ItemDogCollar;
 
@@ -39,14 +41,16 @@ public class EntityDog extends EntityTameable
 		
 		this.getNavigator().setAvoidsWater(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAISit(this));
 		this.tasks.addTask(2, new EntityAIMateNearTorch(this, speed, 10f));
 		this.tasks.addTask(3, new EntityAILeapAtTarget(this, speed));
 		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, .75f, true));
+		this.tasks.addTask(5, new EntityAIEatDogDish(this, 5, speed));
 		this.tasks.addTask(7, new EntityAIWander(this, speed));
 		this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 0f));
 		this.tasks.addTask(9, new EntityAILookIdle(this));
 	}
-
+	
 	@Override
 	protected boolean isAIEnabled()
 	{
@@ -268,5 +272,15 @@ public class EntityDog extends EntityTameable
 	public boolean attackEntityAsMob(Entity par1Entity)
 	{
 		return par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength(par1Entity));
+	}
+	
+	public int getPrimaryEggColor()
+	{
+		return 0;
+	}
+	
+	public int getSecondaryEggColor()
+	{
+		return 0;
 	}
 }

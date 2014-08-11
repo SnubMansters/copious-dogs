@@ -9,3 +9,9 @@ item.copiousdogs.dogDish.name=Dog Dish
 #Entities
 entity.copiousdogs.beagle.name=Beagle
 entity.copiousdogs.bernese_mountain.name=Bernese Mountain
+entity.copiousdogs.golden_retriever.name=Golden Retriever
+entity.copiousdogs.husky.name=Husky
+entity.copiousdogs.chihuahua.name=Chihuahua
+entity.copiousdogs.french_bulldog.name=French Bulldog
+entity.copiousdogs.german_shepherd.name=German Shepherd
+entity.copiousdogs.dalmatian.name=Dalmatian

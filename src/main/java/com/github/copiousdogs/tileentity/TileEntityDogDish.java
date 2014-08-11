@@ -139,14 +139,12 @@ public class TileEntityDogDish extends TileEntity
 				{
 
 					foodLevel = 0;
-					System.out.println(foodLevel);
 					sendChange();
 					return foodLevel;
 				} else
 				{
 
 					foodLevel -= amount;
-					System.out.println(foodLevel);
 					sendChange();
 					return amount;
 				}

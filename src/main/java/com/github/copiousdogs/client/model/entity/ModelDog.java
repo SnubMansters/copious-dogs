@@ -88,10 +88,20 @@ public class ModelDog extends ModelBase
 			model.Tail.rotateAngleY = 0;
 		}
 		
-		model.Leg1.rotateAngleX = MathHelper.cos(walkTime * 0.6662F) * 1.4F * isWalking;
-		model.Leg2.rotateAngleX = MathHelper.cos(walkTime * 0.6662F + (float) Math.PI) * 1.4F * isWalking;
-		model.Leg3.rotateAngleX = MathHelper.cos(walkTime * 0.6662F + (float) Math.PI) * 1.4F * isWalking;
-		model.Leg4.rotateAngleX = MathHelper.cos(walkTime * 0.6662F) * 1.4F * isWalking;
+		if (!entity.isSitting())
+		{
+			model.Leg1.rotateAngleX = MathHelper.cos(walkTime * 0.6662F) * 1.4F * isWalking;
+			model.Leg2.rotateAngleX = MathHelper.cos(walkTime * 0.6662F + (float) Math.PI) * 1.4F * isWalking;
+			model.Leg3.rotateAngleX = MathHelper.cos(walkTime * 0.6662F + (float) Math.PI) * 1.4F * isWalking;
+			model.Leg4.rotateAngleX = MathHelper.cos(walkTime * 0.6662F) * 1.4F * isWalking;
+		}
+		else
+		{
+			model.Leg1.rotateAngleX = (float) (Math.PI / 2f);
+			model.Leg2.rotateAngleX = (float) (Math.PI / 2f);
+			model.Leg3.rotateAngleX = (float) (Math.PI / 2f);
+			model.Leg4.rotateAngleX = (float) (Math.PI / 2f);
+		}
 		
 		super.setLivingAnimations(entity, walkTime, isWalking, random);
 	}
