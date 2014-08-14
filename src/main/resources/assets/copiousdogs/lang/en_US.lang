@@ -5,6 +5,7 @@ itemGroup.tabCopiousDogs=Copious Dogs
 item.copiousdogs.dogBiscuit.name=Dog Biscuit
 item.copiousdogs.dogCollar.name=Dog Collar
 item.copiousdogs.dogDish.name=Dog Dish
+item.copiousdogs.leash.name=Leash
 
 #Entities
 entity.copiousdogs.beagle.name=Beagle
@@ -15,3 +16,4 @@ entity.copiousdogs.chihuahua.name=Chihuahua
 entity.copiousdogs.french_bulldog.name=French Bulldog
 entity.copiousdogs.german_shepherd.name=German Shepherd
 entity.copiousdogs.dalmatian.name=Dalmatian
+entity.copiousdogs.great_dane.name=Great Dane

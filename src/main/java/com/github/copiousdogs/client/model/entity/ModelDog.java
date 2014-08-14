@@ -1,5 +1,6 @@
 package com.github.copiousdogs.client.model.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.client.model.ModelBase;
@@ -13,6 +14,7 @@ import com.github.copiousdogs.entity.EntityDog;
 public class ModelDog extends ModelBase
 {
 	private static HashMap<String, ModelDog> breedModels = new HashMap<String, ModelDog>();
+	public ArrayList<ModelRenderer> parts = new ArrayList<ModelRenderer>();
 	
 	ModelRenderer WolfHead;
 	ModelRenderer Body;
@@ -53,6 +55,17 @@ public class ModelDog extends ModelBase
 	public ModelDog(String breed)
 	{
 		breedModels.put(breed, this);
+		parts.add(WolfHead);
+		parts.add(Body);
+		parts.add(Mane);
+		parts.add(Leg1);
+		parts.add(Leg2);
+		parts.add(Leg3);
+		parts.add(Leg4);
+		parts.add(Tail);
+		parts.add(Ear1);
+		parts.add(Ear2);
+		parts.add(Nose);
 	}
 	
 	public void render(Entity entity, float f, float f1, float f2, float f3,
@@ -88,20 +101,10 @@ public class ModelDog extends ModelBase
 			model.Tail.rotateAngleY = 0;
 		}
 		
-		if (!entity.isSitting())
-		{
-			model.Leg1.rotateAngleX = MathHelper.cos(walkTime * 0.6662F) * 1.4F * isWalking;
-			model.Leg2.rotateAngleX = MathHelper.cos(walkTime * 0.6662F + (float) Math.PI) * 1.4F * isWalking;
-			model.Leg3.rotateAngleX = MathHelper.cos(walkTime * 0.6662F + (float) Math.PI) * 1.4F * isWalking;
-			model.Leg4.rotateAngleX = MathHelper.cos(walkTime * 0.6662F) * 1.4F * isWalking;
-		}
-		else
-		{
-			model.Leg1.rotateAngleX = (float) (Math.PI / 2f);
-			model.Leg2.rotateAngleX = (float) (Math.PI / 2f);
-			model.Leg3.rotateAngleX = (float) (Math.PI / 2f);
-			model.Leg4.rotateAngleX = (float) (Math.PI / 2f);
-		}
+		model.Leg1.rotateAngleX = MathHelper.cos(walkTime * 0.6662F) * 1.4F * isWalking;
+		model.Leg2.rotateAngleX = MathHelper.cos(walkTime * 0.6662F + (float) Math.PI) * 1.4F * isWalking;
+		model.Leg3.rotateAngleX = MathHelper.cos(walkTime * 0.6662F + (float) Math.PI) * 1.4F * isWalking;
+		model.Leg4.rotateAngleX = MathHelper.cos(walkTime * 0.6662F) * 1.4F * isWalking;
 		
 		super.setLivingAnimations(entity, walkTime, isWalking, random);
 	}

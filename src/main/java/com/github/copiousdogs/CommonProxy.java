@@ -30,6 +30,8 @@ public class CommonProxy
 				'S', Item.itemRegistry.getObject("string"), 'I', Item.itemRegistry.getObject("iron_ingot"));
 		GameRegistry.addRecipe(new ItemStack(CopiousDogsBlocks.dogDish, 1, 0), "III", "IBI", "III",
 				'I', Item.itemRegistry.getObject("iron_ingot"), 'B', Item.itemRegistry.getObject("bucket"));
+		GameRegistry.addRecipe(new ItemStack(CopiousDogsItems.leash, 1), "SS", "SS", "SS",
+				'S', Item.itemRegistry.getObject("string"));
 		
 		for (int i = 0; i < 16; i++) {
 			

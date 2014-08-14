@@ -1,9 +1,17 @@
 package com.github.copiousdogs;
 
+import java.util.ArrayList;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityList.EntityEggInfo;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.common.config.Configuration;
 
 import com.github.copiousdogs.client.model.entity.ModelDog;
 import com.github.copiousdogs.content.CopiousDogsBlocks;
@@ -16,8 +24,11 @@ import com.github.copiousdogs.entity.EntityDalmatian;
 import com.github.copiousdogs.entity.EntityFrenchBulldog;
 import com.github.copiousdogs.entity.EntityGermanShepherd;
 import com.github.copiousdogs.entity.EntityGoldenRetriever;
+import com.github.copiousdogs.entity.EntityGreatDane;
 import com.github.copiousdogs.entity.EntityHusky;
+import com.github.copiousdogs.lib.ConfigInfo;
 import com.github.copiousdogs.lib.Reference;
+import com.github.copiousdogs.lib.SpawnMap;
 import com.github.copiousdogs.network.DogDishHandler;
 import com.github.copiousdogs.network.MessageDogDish;
 
@@ -58,6 +69,11 @@ public class CopiousDogs
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		
+		ConfigInfo.INDIVIDUAL_TRAITS = config.getBoolean("randomized traits", "Dog Behavior", true, "Tells wether the dogs should have randomized individual traits or not");
+		ConfigInfo.DOG_SPAWN_PROB = config.getInt("dog spawn probability", "Spawning", 15, 0, 100, "The weighted probability value for dog spawning. Higher value means more frequent spawning. Set to 0 to disable spawning.");
+		
 		snw = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.CHANNEL_NAME);
 		snw.registerMessage(DogDishHandler.class, MessageDogDish.class, 0, Side.CLIENT);
 		
@@ -66,6 +82,16 @@ public class CopiousDogs
 		CopiousDogsTileEntities.init();
 		
 		ModelDog.init();
+		
+		SpawnMap.registerSpawnBiomes(EntityGermanShepherd.class, Type.PLAINS, Type.SPARSE);
+		SpawnMap.registerSpawnBiomes(EntityChihuahua.class, Type.PLAINS, Type.SPARSE);
+		SpawnMap.registerSpawnBiomes(EntityFrenchBulldog.class, Type.PLAINS, Type.SPARSE);
+		SpawnMap.registerSpawnBiomes(EntityGoldenRetriever.class, Type.PLAINS, Type.SPARSE);
+		SpawnMap.registerSpawnBiomes(EntityBeagle.class, Type.FOREST, Type.LUSH);
+		SpawnMap.registerSpawnBiomes(EntityDalmatian.class, Type.FOREST, Type.LUSH);
+		SpawnMap.registerSpawnBiomes(EntityBerneseMountain.class, Type.HILLS, Type.MOUNTAIN);
+		SpawnMap.registerSpawnBiomes(EntityHusky.class, Type.COLD);
+		SpawnMap.registerSpawnBiomes(EntityGreatDane.class, Type.HILLS, Type.MOUNTAIN);
 	}
 	
 	@EventHandler
@@ -80,7 +106,24 @@ public class CopiousDogs
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) 
 	{
+		BiomeDictionary.registerAllBiomes();
 		
+		for (Type type : Type.values())
+		{
+			BiomeGenBase[] biomes = BiomeDictionary.getBiomesForType(type);
+			ArrayList<Class<? extends EntityLiving>> classes = SpawnMap.getClassesFromType(type);
+			
+			if (classes != null) 
+			{
+				for (BiomeGenBase biome : biomes)
+				{
+					for (Class<? extends EntityLiving> clazz : classes)
+					{
+						EntityRegistry.addSpawn(clazz, ConfigInfo.DOG_SPAWN_PROB, 2, 6, EnumCreatureType.creature, biome);
+					}
+				}
+			}
+		}
 	}
 	
 	private void registerEntities()
@@ -91,7 +134,7 @@ public class CopiousDogs
 		
 		EntityRegistry.registerModEntity(EntityBerneseMountain.class, "bernese_mountain", 1, this, 40, 1, true);
 		EntityList.IDtoClassMapping.put(1, EntityBerneseMountain.class);
-		EntityList.entityEggs.put(1, new EntityEggInfo(1, 0xC7A087, 0x9E7F6B));
+		EntityList.entityEggs.put(1, new EntityEggInfo(1, 0x0B0C12, 0x723510));
 		
 		EntityRegistry.registerModEntity(EntityGoldenRetriever.class, "golden_retriever", 2, this, 40, 1, true);
 		EntityList.IDtoClassMapping.put(2, EntityGoldenRetriever.class);
@@ -116,5 +159,9 @@ public class CopiousDogs
 		EntityRegistry.registerModEntity(EntityDalmatian.class, "dalmatian", 7, this, 40, 1, true);
 		EntityList.IDtoClassMapping.put(7, EntityDalmatian.class);
 		EntityList.entityEggs.put(7, new EntityEggInfo(7, 0xFFFFFF, 0x000000));
+		
+		EntityRegistry.registerModEntity(EntityGreatDane.class, "great_dane", 8, this, 40, 1, true);
+		EntityList.IDtoClassMapping.put(8, EntityGreatDane.class);
+		EntityList.entityEggs.put(8, new EntityEggInfo(8, 0xDFB188, 0xC79B69));
 	}
 }
