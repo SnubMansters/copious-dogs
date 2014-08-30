@@ -45,7 +45,6 @@ public class EntityDog extends EntityTameable
 	private String breed;
 	
 	public static HashMap<Type, Class<? extends EntityLiving>> spawnMap = new HashMap<Type, Class<? extends EntityLiving>>();
-	
 	public EntityDog(World p_i1604_1_, float speed, String breed)
 	{
 		super(p_i1604_1_);
@@ -232,6 +231,12 @@ public class EntityDog extends EntityTameable
         return super.attackEntityFrom(p_70097_1_, p_70097_2_);
 	}
 	
+	@Override
+	public int getVerticalFaceSpeed() {
+
+		return 10;
+	}
+	
 	public void tryToTame(EntityPlayer player)
 	{
 		int value = 10 + getAggressiveness();
@@ -292,7 +297,6 @@ public class EntityDog extends EntityTameable
 	{
 		if (!this.worldObj.isRemote)
 		{
-			System.out.println(this.getAggressiveness() + " " + this.getEnergy());
 			
 			ItemStack stack = player.getCurrentEquippedItem();
 			
@@ -380,30 +384,41 @@ public class EntityDog extends EntityTameable
 				}
 			}
 			else {
-				if (hasLeash())
+				
+				if (getOwner().getUniqueID().equals(player.getUniqueID())) 
 				{
-					setHasLeash(false);
-						
-					if (!player.capabilities.isCreativeMode)
+					if (player.isSneaking())
 					{
-						player.inventory.addItemStackToInventory(new ItemStack(CopiousDogsItems.leash, 1));
-					}
-				}
-				else if (hasCollar() && player.isSneaking())
-				{
-					byte color = getCollarColor();
-						
-					setCollarColor((byte) -1);
-						
-					if (!player.capabilities.isCreativeMode)
-					{
-						if (color > -1)
+						if (hasLeash())
 						{
-							Random r = getRNG();
+							setHasLeash(false);
 								
-							player.inventory.addItemStackToInventory(new ItemStack(CopiousDogsItems.dogCollar, 1, ItemDogCollar.getItemFromDye(color)));
+							if (!player.capabilities.isCreativeMode)
+							{
+								player.inventory.addItemStackToInventory(new ItemStack(CopiousDogsItems.leash, 1));
+							}
 						}
-					}	
+						else if (hasCollar())
+						{
+							byte color = getCollarColor();
+								
+							setCollarColor((byte) -1);
+								
+							if (!player.capabilities.isCreativeMode)
+							{
+								if (color > -1)
+								{
+									Random r = getRNG();
+										
+									player.inventory.addItemStackToInventory(new ItemStack(CopiousDogsItems.dogCollar, 1, ItemDogCollar.getItemFromDye(color)));
+								}
+							}	
+						}
+					}
+					else {
+						setSitting(!isSitting());
+						this.aiSit.setSitting(isSitting());
+					}
 				}
 			}
 		}

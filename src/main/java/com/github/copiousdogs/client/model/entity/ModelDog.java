@@ -1,9 +1,9 @@
 package com.github.copiousdogs.client.model.entity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,7 +14,6 @@ import com.github.copiousdogs.entity.EntityDog;
 public class ModelDog extends ModelBase
 {
 	private static HashMap<String, ModelDog> breedModels = new HashMap<String, ModelDog>();
-	public ArrayList<ModelRenderer> parts = new ArrayList<ModelRenderer>();
 	
 	ModelRenderer WolfHead;
 	ModelRenderer Body;
@@ -27,6 +26,10 @@ public class ModelDog extends ModelBase
 	ModelRenderer Ear1;
 	ModelRenderer Ear2;
 	ModelRenderer Nose;
+	
+	float tailRotX, tailRotY, tailRotZ;
+	float headRotX, headRotY, headRotZ;
+	float offsetX, offsetY, offsetZ;
 	
 	public static void init()
 	{
@@ -48,6 +51,24 @@ public class ModelDog extends ModelBase
 		new ModelGreatDanePup();
 		new ModelHusky();
 		new ModelHuskyPup();
+		new ModelBoxer();
+		new ModelBoxerPup();
+		new ModelCardiganCorgi();
+		new ModelCardiganCorgiPup();
+		new ModelCollie();
+		new ModelColliePup();
+		new ModelDoberman();
+		new ModelDobermanPup();
+		new ModelPomeranian();
+		new ModelPomeranianPup();
+		new ModelPoodle();
+		new ModelPoodlePup();
+		new ModelPug();
+		new ModelPugPup();
+		new ModelSaintBernard();
+		new ModelSaintBernardPup();
+		new ModelYorkshire();
+		new ModelYorkshirePup();
 	}
 	
 	public ModelDog() {};
@@ -55,17 +76,6 @@ public class ModelDog extends ModelBase
 	public ModelDog(String breed)
 	{
 		breedModels.put(breed, this);
-		parts.add(WolfHead);
-		parts.add(Body);
-		parts.add(Mane);
-		parts.add(Leg1);
-		parts.add(Leg2);
-		parts.add(Leg3);
-		parts.add(Leg4);
-		parts.add(Tail);
-		parts.add(Ear1);
-		parts.add(Ear2);
-		parts.add(Nose);
 	}
 	
 	public void render(Entity entity, float f, float f1, float f2, float f3,
@@ -91,21 +101,41 @@ public class ModelDog extends ModelBase
 			float isWalking, float random)
 	{
 		ModelDog model = breedModels.get(entity.getTextureName());
-		
+			
 		if (entity.isTailAnimated())
 		{
-			model.Tail.rotateAngleY = MathHelper.cos(entity.ticksExisted * 0.8F) * 0.6F;
+			model.tailRotY = MathHelper.cos(entity.ticksExisted * 0.8F) * 0.6F;
 		}
 		else
 		{
-			model.Tail.rotateAngleY = 0;
+			model.tailRotY = 0;
 		}
 		
-		model.Leg1.rotateAngleX = MathHelper.cos(walkTime * 0.6662F) * 1.4F * isWalking;
-		model.Leg2.rotateAngleX = MathHelper.cos(walkTime * 0.6662F + (float) Math.PI) * 1.4F * isWalking;
-		model.Leg3.rotateAngleX = MathHelper.cos(walkTime * 0.6662F + (float) Math.PI) * 1.4F * isWalking;
-		model.Leg4.rotateAngleX = MathHelper.cos(walkTime * 0.6662F) * 1.4F * isWalking;
-		
+		if (entity.isSitting()) {
+
+			ModelBox box = (ModelBox)model.Leg1.cubeList.get(0);
+			
+			model.offsetY = (box.posY2 - box.posY1) - 1;
+			
+			model.Leg1.rotateAngleX = -90f / 180f * (float)Math.PI;
+			model.Leg2.rotateAngleX = -90f / 180f * (float)Math.PI;
+			model.Leg3.rotateAngleX = -90f / 180f * (float)Math.PI;
+			model.Leg4.rotateAngleX = -90f / 180f * (float)Math.PI;
+			model.Leg1.rotateAngleY = (float)Math.PI / 8f;
+			model.Leg2.rotateAngleY = -(float)Math.PI / 8f;
+		}
+		else {
+			
+			model.offsetY = 0;
+			
+			model.Leg1.rotateAngleX = MathHelper.cos(walkTime * 0.6662F) * 1.4F * isWalking;
+			model.Leg2.rotateAngleX = MathHelper.cos(walkTime * 0.6662F + (float) Math.PI) * 1.4F * isWalking;
+			model.Leg3.rotateAngleX = MathHelper.cos(walkTime * 0.6662F + (float) Math.PI) * 1.4F * isWalking;
+			model.Leg4.rotateAngleX = MathHelper.cos(walkTime * 0.6662F) * 1.4F * isWalking;
+			model.Leg1.rotateAngleY = 0f;
+			model.Leg2.rotateAngleY = 0f;
+		}
+			
 		super.setLivingAnimations(entity, walkTime, isWalking, random);
 	}
 	
@@ -125,6 +155,10 @@ public class ModelDog extends ModelBase
 	public void setRotationAngles(float f, float f1, float f2, float f3,
 			float f4, float f5, Entity entity)
 	{
+		
+		ModelDog model = breedModels.get(((EntityDog)entity).getTextureName());
+		model.headRotX = f4 / (180f / (float) Math.PI);
+		model.headRotY = f3 / (180f / (float) Math.PI);
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}
 }

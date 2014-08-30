@@ -19,6 +19,7 @@ import com.github.copiousdogs.CopiousDogs;
 import com.github.copiousdogs.lib.Reference;
 import com.github.copiousdogs.tileentity.TileEntityDogDish;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -87,7 +88,7 @@ public class BlockDogDish extends BlockContainer
 
 		TileEntityDogDish tileEntity = (TileEntityDogDish) par1World
 				.getTileEntity(par2, par3, par4);
-
+		
 		ItemStack stack = entity.getCurrentEquippedItem();
 		
 		if (stack != null)

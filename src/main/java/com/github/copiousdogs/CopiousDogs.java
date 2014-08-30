@@ -19,19 +19,29 @@ import com.github.copiousdogs.content.CopiousDogsItems;
 import com.github.copiousdogs.content.CopiousDogsTileEntities;
 import com.github.copiousdogs.entity.EntityBeagle;
 import com.github.copiousdogs.entity.EntityBerneseMountain;
+import com.github.copiousdogs.entity.EntityBoxer;
+import com.github.copiousdogs.entity.EntityCardiganCorgi;
 import com.github.copiousdogs.entity.EntityChihuahua;
+import com.github.copiousdogs.entity.EntityCollie;
 import com.github.copiousdogs.entity.EntityDalmatian;
+import com.github.copiousdogs.entity.EntityDoberman;
 import com.github.copiousdogs.entity.EntityFrenchBulldog;
 import com.github.copiousdogs.entity.EntityGermanShepherd;
 import com.github.copiousdogs.entity.EntityGoldenRetriever;
 import com.github.copiousdogs.entity.EntityGreatDane;
 import com.github.copiousdogs.entity.EntityHusky;
+import com.github.copiousdogs.entity.EntityPomeranian;
+import com.github.copiousdogs.entity.EntityPoodle;
+import com.github.copiousdogs.entity.EntityPug;
+import com.github.copiousdogs.entity.EntitySaintBernard;
+import com.github.copiousdogs.entity.EntityYorkshire;
 import com.github.copiousdogs.lib.ConfigInfo;
 import com.github.copiousdogs.lib.Reference;
 import com.github.copiousdogs.lib.SpawnMap;
 import com.github.copiousdogs.network.DogDishHandler;
 import com.github.copiousdogs.network.MessageDogDish;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -72,10 +82,14 @@ public class CopiousDogs
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		
 		ConfigInfo.INDIVIDUAL_TRAITS = config.getBoolean("randomized traits", "Dog Behavior", true, "Tells wether the dogs should have randomized individual traits or not");
-		ConfigInfo.DOG_SPAWN_PROB = config.getInt("dog spawn probability", "Spawning", 15, 0, 100, "The weighted probability value for dog spawning. Higher value means more frequent spawning. Set to 0 to disable spawning.");
+		ConfigInfo.DOG_SPAWN_PROB = config.getInt("dog spawn probability", "Spawning", 10, 0, 100, "The weighted probability value for dog spawning. Higher value means more frequent spawning. Set to 0 to disable spawning.");
 		
 		snw = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.CHANNEL_NAME);
-		snw.registerMessage(DogDishHandler.class, MessageDogDish.class, 0, Side.CLIENT);
+		
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) 
+		{
+			snw.registerMessage(DogDishHandler.class, MessageDogDish.class, 0, Side.CLIENT);
+		}
 		
 		CopiousDogsItems.init();
 		CopiousDogsBlocks.init();
@@ -87,11 +101,20 @@ public class CopiousDogs
 		SpawnMap.registerSpawnBiomes(EntityChihuahua.class, Type.PLAINS, Type.SPARSE);
 		SpawnMap.registerSpawnBiomes(EntityFrenchBulldog.class, Type.PLAINS, Type.SPARSE);
 		SpawnMap.registerSpawnBiomes(EntityGoldenRetriever.class, Type.PLAINS, Type.SPARSE);
+		SpawnMap.registerSpawnBiomes(EntityBoxer.class, Type.PLAINS, Type.SPARSE);
+		SpawnMap.registerSpawnBiomes(EntityYorkshire.class, Type.PLAINS, Type.SPARSE);
+		SpawnMap.registerSpawnBiomes(EntityCollie.class, Type.PLAINS, Type.FOREST, Type.HILLS, Type.MOUNTAIN);
+		SpawnMap.registerSpawnBiomes(EntityPoodle.class, Type.PLAINS, Type.FOREST, Type.HILLS, Type.LUSH);
 		SpawnMap.registerSpawnBiomes(EntityBeagle.class, Type.FOREST, Type.LUSH);
 		SpawnMap.registerSpawnBiomes(EntityDalmatian.class, Type.FOREST, Type.LUSH);
+		SpawnMap.registerSpawnBiomes(EntityDoberman.class, Type.FOREST, Type.LUSH);
+		SpawnMap.registerSpawnBiomes(EntityPomeranian.class, Type.FOREST, Type.LUSH);
+		SpawnMap.registerSpawnBiomes(EntityPug.class, Type.FOREST, Type.LUSH);
 		SpawnMap.registerSpawnBiomes(EntityBerneseMountain.class, Type.HILLS, Type.MOUNTAIN);
-		SpawnMap.registerSpawnBiomes(EntityHusky.class, Type.COLD);
 		SpawnMap.registerSpawnBiomes(EntityGreatDane.class, Type.HILLS, Type.MOUNTAIN);
+		SpawnMap.registerSpawnBiomes(EntityCardiganCorgi.class, Type.HILLS, Type.MOUNTAIN);
+		SpawnMap.registerSpawnBiomes(EntitySaintBernard.class, Type.HILLS, Type.MOUNTAIN, Type.COLD);
+		SpawnMap.registerSpawnBiomes(EntityHusky.class, Type.COLD);
 	}
 	
 	@EventHandler
@@ -99,7 +122,10 @@ public class CopiousDogs
 	{	
 		registerEntities();
 		
-		proxy.registerRenderers();
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		{
+			proxy.registerRenderers();
+		}
 		proxy.registerRecipes();
 	}
 	
@@ -163,5 +189,41 @@ public class CopiousDogs
 		EntityRegistry.registerModEntity(EntityGreatDane.class, "great_dane", 8, this, 40, 1, true);
 		EntityList.IDtoClassMapping.put(8, EntityGreatDane.class);
 		EntityList.entityEggs.put(8, new EntityEggInfo(8, 0xDFB188, 0xC79B69));
+		
+		EntityRegistry.registerModEntity(EntityBoxer.class, "boxer", 9, this, 40, 1, true);
+		EntityList.IDtoClassMapping.put(9, EntityBoxer.class);
+		EntityList.entityEggs.put(9, new EntityEggInfo(9, 0x866331, 0xB7B1A8));
+		
+		EntityRegistry.registerModEntity(EntityCardiganCorgi.class, "cardigan_corgi", 10, this, 40, 1, true);
+		EntityList.IDtoClassMapping.put(10, EntityCardiganCorgi.class);
+		EntityList.entityEggs.put(10, new EntityEggInfo(10, 0xA46F43, 0x827A72));
+		
+		EntityRegistry.registerModEntity(EntityCollie.class, "collie", 11, this, 40, 1, true);
+		EntityList.IDtoClassMapping.put(11, EntityCollie.class);
+		EntityList.entityEggs.put(11, new EntityEggInfo(11, 0x9F653D, 0xDAD9DB));
+		
+		EntityRegistry.registerModEntity(EntityDoberman.class, "doberman", 12, this, 40, 1, true);
+		EntityList.IDtoClassMapping.put(12, EntityDoberman.class);
+		EntityList.entityEggs.put(12, new EntityEggInfo(12, 0x1C1B1B, 0x7D462D));
+		
+		EntityRegistry.registerModEntity(EntityPomeranian.class, "pomeranian", 13, this, 40, 1, true);
+		EntityList.IDtoClassMapping.put(13, EntityPomeranian.class);
+		EntityList.entityEggs.put(13, new EntityEggInfo(13, 0x9C531B, 0xC0854A));
+		
+		EntityRegistry.registerModEntity(EntityPoodle.class, "poodle", 14, this, 40, 1, true);
+		EntityList.IDtoClassMapping.put(14, EntityPoodle.class);
+		EntityList.entityEggs.put(14, new EntityEggInfo(14, 0xC2C7D4, 0xD7DADF));
+		
+		EntityRegistry.registerModEntity(EntityPug.class, "pug", 15, this, 40, 1, true);
+		EntityList.IDtoClassMapping.put(15, EntityPug.class);
+		EntityList.entityEggs.put(15, new EntityEggInfo(15, 0xCDA27F, 0xD2B094));
+		
+		EntityRegistry.registerModEntity(EntitySaintBernard.class, "saint_bernard", 16, this, 40, 1, true);
+		EntityList.IDtoClassMapping.put(16, EntitySaintBernard.class);
+		EntityList.entityEggs.put(16, new EntityEggInfo(16, 0x793F1F, 0xC6BEAA));
+		
+		EntityRegistry.registerModEntity(EntityYorkshire.class, "yorkshire", 17, this, 40, 1, true);
+		EntityList.IDtoClassMapping.put(17, EntityYorkshire.class);
+		EntityList.entityEggs.put(17, new EntityEggInfo(17, 0x1F1E1D, 0x805234));
 	}
 }

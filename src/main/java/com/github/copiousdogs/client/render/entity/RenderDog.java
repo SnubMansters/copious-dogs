@@ -55,7 +55,7 @@ public class RenderDog extends RenderLiving
 
 		EntityDog dog = (EntityDog) entity;
 		
-		if (dog.hasLeash()) 
+		if (dog.hasLeash() && dog.getOwner() != null) 
 		{
 			
 			float f9 = ((EntityLivingBase) dog.getOwner()).getSwingProgress(f1);

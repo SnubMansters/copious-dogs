@@ -1,5 +1,7 @@
 package com.github.copiousdogs.client.model.entity;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
@@ -80,19 +82,53 @@ public class ModelGermanShepherdPup extends ModelDog
 	}
 
 	public void render(Entity entity, float f, float f1, float f2, float f3,
-			float f4, float f5)
-	{
+			float f4, float f5) {
+		
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		WolfHead.render(f5);
-		Body.render(f5);
-		Mane.render(f5);
-		Leg1.render(f5);
-		Leg2.render(f5);
-		Leg3.render(f5);
-		Leg4.render(f5);
-		Tail.render(f5);
-		Ear1.render(f5);
-		Ear2.render(f5);
-		Nose.render(f5);
+		GL11.glPushMatrix();
+		{
+			GL11.glTranslatef(offsetX * f5, offsetY * f5, offsetZ * f5);
+			
+			GL11.glPushMatrix();
+			{
+				GL11.glTranslatef(WolfHead.rotationPointX * f5, WolfHead.rotationPointY * f5, WolfHead.rotationPointZ * f5);
+				GL11.glRotatef((float) (headRotY * 180f / Math.PI), 0f, 1f, 0f);
+				GL11.glRotatef((float) (headRotX * 180f / Math.PI), 1f, 0f, 0f);
+				GL11.glRotatef((float) (headRotZ * 180f / Math.PI), 0f, 0f, 1f);
+				
+					GL11.glPushMatrix();
+					{
+						GL11.glTranslatef(-WolfHead.rotationPointX * f5, -WolfHead.rotationPointY * f5, -WolfHead.rotationPointZ * f5);
+						
+						WolfHead.render(f5);
+						Ear1.render(f5);
+						Ear2.render(f5);
+						Nose.render(f5);
+					}
+					GL11.glPopMatrix();
+			}
+			GL11.glPopMatrix();
+			Body.render(f5);
+			Mane.render(f5);
+			Leg1.render(f5);
+			Leg2.render(f5);
+			Leg3.render(f5);
+			Leg4.render(f5);
+			GL11.glPushMatrix();
+			{
+				GL11.glTranslatef(Tail.rotationPointX * f5, Tail.rotationPointY * f5, Tail.rotationPointZ * f5);
+				GL11.glRotatef((float) (tailRotY * 180f / Math.PI), 0f, 1f, 0f);
+				GL11.glRotatef((float) (tailRotX * 180f / Math.PI), 1f, 0f, 0f);
+				GL11.glRotatef((float) (tailRotZ * 180f / Math.PI), 0f, 0f, 1f);
+				
+				GL11.glPushMatrix();
+					GL11.glTranslatef(-Tail.rotationPointX * f5, -Tail.rotationPointY * f5, -Tail.rotationPointZ * f5);
+				
+					Tail.render(f5);
+				GL11.glPopMatrix();
+			}
+			GL11.glPopMatrix();
+		}
+		GL11.glPopMatrix();
 	}
 }
