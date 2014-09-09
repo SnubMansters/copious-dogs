@@ -38,6 +38,8 @@ import com.github.copiousdogs.entity.ai.EntityAITargetNonTamedBOA;
 import com.github.copiousdogs.item.ItemDogCollar;
 import com.github.copiousdogs.lib.ConfigInfo;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+
 public class EntityDog extends EntityTameable
 {
 	public float walkSpeed;
@@ -245,7 +247,6 @@ public class EntityDog extends EntityTameable
 		{
 			setTamed(true);
 			func_152115_b(player.getUniqueID().toString());
-			System.out.println(true);
 			playTameEffect(true);
 		}
 		else
@@ -384,15 +385,15 @@ public class EntityDog extends EntityTameable
 				}
 			}
 			else {
-				
-				if (getOwner().getUniqueID().equals(player.getUniqueID())) 
+
+				if (isTamed() && getOwner() != null && getOwner().getUniqueID().equals(player.getUniqueID())) 
 				{
 					if (player.isSneaking())
 					{
 						if (hasLeash())
 						{
 							setHasLeash(false);
-								
+							
 							if (!player.capabilities.isCreativeMode)
 							{
 								player.inventory.addItemStackToInventory(new ItemStack(CopiousDogsItems.leash, 1));
