@@ -7,7 +7,7 @@ Credits
 =======
 
 Dramentiaras - Programmer
-
 wolfpupKG52 - Modelling and textures
+TmmCrafter - Community manager and more
 
 Original idea by Cryztal.
