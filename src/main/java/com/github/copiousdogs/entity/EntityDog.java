@@ -246,7 +246,7 @@ public class EntityDog extends EntityTameable
 		if (getTameValue() >= 10)
 		{
 			setTamed(true);
-			func_152115_b(player.getUniqueID().toString());
+			setOwner(player.getCommandSenderName());
 			playTameEffect(true);
 		}
 		else
@@ -259,7 +259,6 @@ public class EntityDog extends EntityTameable
 	public void setTamed(boolean p_70903_1_)
 	{
 		super.setTamed(p_70903_1_);
-		
 		setTailAnimated(p_70903_1_);
 	}
 	
@@ -303,8 +302,8 @@ public class EntityDog extends EntityTameable
 			
 			if (stack != null)
 			{
-				if (this.isBreedingItem(stack) && this.getGrowingAge() == 0 && !this.isInLove() 
-						&& this.isTamed() && this.getOwner().getUniqueID().equals(player.getUniqueID()))
+				if (this.getOwner() != null && this.isBreedingItem(stack) && this.getGrowingAge() == 0 && !this.isInLove() 
+						&& this.isTamed() && this.getOwner() == player)
 				{
 					player.swingItem();
 					
@@ -339,7 +338,7 @@ public class EntityDog extends EntityTameable
 				}
 				if (stack.getItem() == CopiousDogsItems.dogCollar)
 				{
-					if (this.isTamed() && getOwner().getUniqueID().equals(player.getUniqueID()))
+					if (this.isTamed() && this.getOwner() == player)
 					{
 						player.swingItem();
 						byte color = getCollarColor();
@@ -370,7 +369,7 @@ public class EntityDog extends EntityTameable
 				
 				if (stack.getItem() == CopiousDogsItems.leash)
 				{
-					if (hasCollar() && !hasLeash() && this.getOwner().getUniqueID().equals(player.getUniqueID()))
+					if (hasCollar() && !hasLeash() && this.getOwner() == player)
 					{
 						player.swingItem();
 						setHasLeash(true);
@@ -386,7 +385,7 @@ public class EntityDog extends EntityTameable
 			}
 			else {
 
-				if (isTamed() && getOwner() != null && getOwner().getUniqueID().equals(player.getUniqueID())) 
+				if (isTamed() && getOwner() != null && this.getOwner() == player) 
 				{
 					if (player.isSneaking())
 					{

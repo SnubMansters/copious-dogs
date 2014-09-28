@@ -97,24 +97,24 @@ public class CopiousDogs
 		
 		ModelDog.init();
 		
-		SpawnMap.registerSpawnBiomes(EntityGermanShepherd.class, Type.PLAINS, Type.SPARSE);
-		SpawnMap.registerSpawnBiomes(EntityChihuahua.class, Type.PLAINS, Type.SPARSE);
-		SpawnMap.registerSpawnBiomes(EntityFrenchBulldog.class, Type.PLAINS, Type.SPARSE);
-		SpawnMap.registerSpawnBiomes(EntityGoldenRetriever.class, Type.PLAINS, Type.SPARSE);
-		SpawnMap.registerSpawnBiomes(EntityBoxer.class, Type.PLAINS, Type.SPARSE);
-		SpawnMap.registerSpawnBiomes(EntityYorkshire.class, Type.PLAINS, Type.SPARSE);
+		SpawnMap.registerSpawnBiomes(EntityGermanShepherd.class, Type.PLAINS);
+		SpawnMap.registerSpawnBiomes(EntityChihuahua.class, Type.PLAINS);
+		SpawnMap.registerSpawnBiomes(EntityFrenchBulldog.class, Type.PLAINS);
+		SpawnMap.registerSpawnBiomes(EntityGoldenRetriever.class, Type.PLAINS);
+		SpawnMap.registerSpawnBiomes(EntityBoxer.class, Type.PLAINS);
+		SpawnMap.registerSpawnBiomes(EntityYorkshire.class, Type.PLAINS);
 		SpawnMap.registerSpawnBiomes(EntityCollie.class, Type.PLAINS, Type.FOREST, Type.HILLS, Type.MOUNTAIN);
-		SpawnMap.registerSpawnBiomes(EntityPoodle.class, Type.PLAINS, Type.FOREST, Type.HILLS, Type.LUSH);
-		SpawnMap.registerSpawnBiomes(EntityBeagle.class, Type.FOREST, Type.LUSH);
-		SpawnMap.registerSpawnBiomes(EntityDalmatian.class, Type.FOREST, Type.LUSH);
-		SpawnMap.registerSpawnBiomes(EntityDoberman.class, Type.FOREST, Type.LUSH);
-		SpawnMap.registerSpawnBiomes(EntityPomeranian.class, Type.FOREST, Type.LUSH);
-		SpawnMap.registerSpawnBiomes(EntityPug.class, Type.FOREST, Type.LUSH);
+		SpawnMap.registerSpawnBiomes(EntityPoodle.class, Type.PLAINS, Type.FOREST, Type.HILLS);
+		SpawnMap.registerSpawnBiomes(EntityBeagle.class, Type.FOREST);
+		SpawnMap.registerSpawnBiomes(EntityDalmatian.class, Type.FOREST);
+		SpawnMap.registerSpawnBiomes(EntityDoberman.class, Type.FOREST);
+		SpawnMap.registerSpawnBiomes(EntityPomeranian.class, Type.FOREST);
+		SpawnMap.registerSpawnBiomes(EntityPug.class, Type.FOREST);
 		SpawnMap.registerSpawnBiomes(EntityBerneseMountain.class, Type.HILLS, Type.MOUNTAIN);
 		SpawnMap.registerSpawnBiomes(EntityGreatDane.class, Type.HILLS, Type.MOUNTAIN);
 		SpawnMap.registerSpawnBiomes(EntityCardiganCorgi.class, Type.HILLS, Type.MOUNTAIN);
-		SpawnMap.registerSpawnBiomes(EntitySaintBernard.class, Type.HILLS, Type.MOUNTAIN, Type.COLD);
-		SpawnMap.registerSpawnBiomes(EntityHusky.class, Type.COLD);
+		SpawnMap.registerSpawnBiomes(EntitySaintBernard.class, Type.HILLS, Type.MOUNTAIN);
+		SpawnMap.registerSpawnBiomes(EntityHusky.class, Type.FROZEN);
 	}
 	
 	@EventHandler
