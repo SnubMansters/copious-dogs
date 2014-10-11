@@ -80,9 +80,10 @@ public class CopiousDogs
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-		
-		ConfigInfo.INDIVIDUAL_TRAITS = config.getBoolean("randomized traits", "Dog Behavior", true, "Tells wether the dogs should have randomized individual traits or not");
-		ConfigInfo.DOG_SPAWN_PROB = config.getInt("dog spawn probability", "Spawning", 10, 0, 100, "The weighted probability value for dog spawning. Higher value means more frequent spawning. Set to 0 to disable spawning.");
+		ConfigInfo.INDIVIDUAL_TRAITS = config.get("Dog Behavior", "randomized traits", true, 
+				"Tells wether the dogs should have randomized individual traits or not").getBoolean(true);
+		ConfigInfo.DOG_SPAWN_PROB = config.get("Spawning", "dog spawn probability", 10, 
+				"The weighted probability value for dog spawning. Higher value means more frequent spawning. Set to 0 to disable spawning.").getInt();
 		
 		snw = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.CHANNEL_NAME);
 		
