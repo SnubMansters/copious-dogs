@@ -29,7 +29,7 @@ public class EntityAIEatDogDish extends EntityAIBase
 		{
 			TileEntityDogDish d = getNearbyDogDish();
 			
-			if (d != null && d.canEat(1f))
+			if (d != null && d.canEat(1f) && !dog.isSitting())
 			{
 				if (dog.getNavigator().tryMoveToXYZ(d.xCoord, d.yCoord, d.zCoord, moveSpeed)) 
 				{
@@ -56,7 +56,7 @@ public class EntityAIEatDogDish extends EntityAIBase
 	@Override
 	public void updateTask()
 	{
-		if (dog.getDistanceSq(dish.xCoord, dish.yCoord, dish.zCoord) < 3f)
+		if (dog.getDistanceSq(dish.xCoord, dish.yCoord, dish.zCoord) < 1.5f)
 		{
 			dog.getNavigator().clearPathEntity();
 			dog.setEating(true);
@@ -66,7 +66,7 @@ public class EntityAIEatDogDish extends EntityAIBase
 			if (eatingTicks % 2 == 0) {
 				dog.heal(dish.eat(1));
 			}
-			System.out.println(dog.getHealth());
+			
 			if (dog.getHealth() == dog.getMaxHealth()) dog.setEating(false);
 		}
 	}
