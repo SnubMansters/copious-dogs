@@ -32,7 +32,7 @@ public class RenderDog extends RenderLiving
 		if (entity instanceof EntityDog)
 		{
 			EntityDog dog = (EntityDog) entity;
-
+			
 			float f1;
 			if (i0 == 1 && dog.isTamed() && dog.hasCollar())
 			{

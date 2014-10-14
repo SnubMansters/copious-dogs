@@ -12,8 +12,9 @@ import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntitySheep;
@@ -35,16 +36,18 @@ import com.github.copiousdogs.entity.ai.EntityAIMateNearTorch;
 import com.github.copiousdogs.entity.ai.EntityAIOwnerHurtByTargetBOA;
 import com.github.copiousdogs.entity.ai.EntityAIOwnerHurtTargetBOA;
 import com.github.copiousdogs.entity.ai.EntityAITargetNonTamedBOA;
+import com.github.copiousdogs.entity.ai.EntityAIWanderBOE;
 import com.github.copiousdogs.item.ItemDogCollar;
 import com.github.copiousdogs.lib.ConfigInfo;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public class EntityDog extends EntityTameable
 {
 	public float walkSpeed;
 	public float runSpeed;
 	private String breed;
+	
+	private static final IAttribute aggressiveness = (new RangedAttribute("aggressiveness", 5.0D, 1.0D, 10.0D)).setDescription("Aggressiveness").setShouldWatch(true);
+	private static final IAttribute energy = (new RangedAttribute("energy", 5.0D, 1.0D, 10.0D)).setDescription("Energy").setShouldWatch(true);
 	
 	public static HashMap<Type, Class<? extends EntityLiving>> spawnMap = new HashMap<Type, Class<? extends EntityLiving>>();
 	public EntityDog(World p_i1604_1_, float speed, String breed)
@@ -53,13 +56,17 @@ public class EntityDog extends EntityTameable
 		
 		if (ConfigInfo.INDIVIDUAL_TRAITS)
 		{
-			setAggressiveness(this.getRNG().nextInt(9) + 1);
-			setEnergy(this.getRNG().nextInt(9) + 1);
+			double a = this.getRNG().nextDouble() * 10.0 + 1.0;
+			if (a < 1) a = 1;
+			if (a > 10) a = 10;
+			setAggressiveness(a);
+			double e = this.getRNG().nextDouble() * 10.0 + 1.0;
+			if (e < 1) e = 1;
+			if (e > 10) e = 10;
+			setEnergy(e);
 		}
 		
-		float speedModifier = 0.75f + (getEnergy() / 10) * 2f;
-		
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(15);
+		float speedModifier = 0.75f + ((float)getEnergy() / 20f);
 		this.walkSpeed = speed * speedModifier;
 		this.runSpeed = speed * 1.2f  * speedModifier;
 		this.breed = breed;
@@ -67,12 +74,12 @@ public class EntityDog extends EntityTameable
 		this.getNavigator().setAvoidsWater(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, this.aiSit);
-		this.tasks.addTask(3, new EntityAILeapAtTarget(this, runSpeed));
+		this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.75f));
 		this.tasks.addTask(2, new EntityAIMateNearTorch(this, walkSpeed, 10f));
 		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, .75f, true));
 		this.tasks.addTask(5, new EntityAIEatDogDish(this, 5, walkSpeed));
 		this.tasks.addTask(6, new EntityAIFollowOwnerLeashed(this, runSpeed, 2f, 5f));
-		this.tasks.addTask(7, new EntityAIWander(this, runSpeed));
+		this.tasks.addTask(7, new EntityAIWanderBOE(this, walkSpeed, runSpeed));
 		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 0f));
 		this.tasks.addTask(9, new EntityAILookIdle(this));
 		this.targetTasks.addTask(0, new EntityAIOwnerHurtByTargetBOA(this));
@@ -107,8 +114,6 @@ public class EntityDog extends EntityTameable
 		this.dataWatcher.addObject(19, this.getHealth());
 		this.dataWatcher.addObject(20, 0);
 		this.dataWatcher.addObject(21, (byte)-1);
-		this.dataWatcher.addObject(22, 5);
-		this.dataWatcher.addObject(23, 5);
 	}
 	
 	@Override
@@ -165,30 +170,24 @@ public class EntityDog extends EntityTameable
 		}
 	}
 	
-	public int getAggressiveness()
+	public double getAggressiveness()
 	{
-		return this.dataWatcher.getWatchableObjectInt(22);
+		return getEntityAttribute(aggressiveness).getAttributeValue();
 	}
 	
-	public void setAggressiveness(int par0)
+	public void setAggressiveness(double par0)
 	{
-		if (par0 < 0) par0 = 0;
-		if (par0 > 10) par0 = 10;
-		
-		this.dataWatcher.updateObject(22, par0);
+		getEntityAttribute(aggressiveness).setBaseValue(par0);
 	}
 	
-	public int getEnergy()
+	public double getEnergy()
 	{
-		return this.dataWatcher.getWatchableObjectInt(23);
+		return getEntityAttribute(energy).getAttributeValue();
 	}
 	
-	public void setEnergy(int par0)
+	public void setEnergy(double par0)
 	{
-		if (par0 < 0) par0 = 0;
-		if (par0 > 10) par0 = 10;
-		
-		this.dataWatcher.updateObject(23, par0);
+		getEntityAttribute(energy).setBaseValue(par0);
 	}
 	
 	public byte getCollarColor()
@@ -241,9 +240,9 @@ public class EntityDog extends EntityTameable
 	
 	public void tryToTame(EntityPlayer player)
 	{
-		int value = 10 + getAggressiveness();
+		double value = 10 + getAggressiveness();
 		
-		if (getTameValue() >= 10)
+		if (getTameValue() >= value)
 		{
 			setTamed(true);
 			setOwner(player.getCommandSenderName());
@@ -329,7 +328,7 @@ public class EntityDog extends EntityTameable
 						}
 						else 
 						{
-							setTameValue(11);
+							setTameValue(10 + (int)getAggressiveness() + 1);
 							tryToTame(player);
 						}
 						
@@ -461,8 +460,8 @@ public class EntityDog extends EntityTameable
 		tag.setBoolean("HasLeash", hasLeash());
 		tag.setByte("CollarColor", getCollarColor());
 		
-		tag.setInteger("Aggressiveness", getAggressiveness());
-		tag.setInteger("Energy", getEnergy());
+		tag.setDouble("Aggressiveness", getAggressiveness());
+		tag.setDouble("Energy", getEnergy());
 	}
 	
 	@Override
@@ -474,7 +473,7 @@ public class EntityDog extends EntityTameable
 		setHasLeash(tag.getBoolean("HasLeash"));
 		setCollarColor(tag.getByte("CollarColor"));
 		
-		setEnergy(tag.getInteger("Energy"));
-		setAggressiveness(tag.getInteger("Aggressiveness"));
+		setEnergy(tag.getDouble("Energy"));
+		setAggressiveness(tag.getDouble("Aggressiveness"));
 	}
 }
