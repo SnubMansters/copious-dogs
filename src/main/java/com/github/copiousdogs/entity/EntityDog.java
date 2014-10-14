@@ -76,7 +76,7 @@ public class EntityDog extends EntityTameable
 		this.getNavigator().setAvoidsWater(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, this.aiSit);
-		this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.75f));
+		this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.35f));
 		this.tasks.addTask(2, new EntityAIMateNearTorch(this, walkSpeed, 10f));
 		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, .75f, true));
 		this.tasks.addTask(5, new EntityAIEatDogDish(this, 5, walkSpeed));
