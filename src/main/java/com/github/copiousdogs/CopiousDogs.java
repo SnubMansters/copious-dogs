@@ -11,7 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import net.minecraftforge.common.config.Configuration;
 
 import com.github.copiousdogs.client.model.entity.ModelDog;
 import com.github.copiousdogs.content.CopiousDogsBlocks;
@@ -35,10 +34,10 @@ import com.github.copiousdogs.entity.EntityPoodle;
 import com.github.copiousdogs.entity.EntityPug;
 import com.github.copiousdogs.entity.EntitySaintBernard;
 import com.github.copiousdogs.entity.EntityYorkshire;
-import com.github.copiousdogs.lib.ConfigInfo;
+import com.github.copiousdogs.handler.ConfigurationHandler;
+import com.github.copiousdogs.handler.DogDishHandler;
 import com.github.copiousdogs.lib.Reference;
 import com.github.copiousdogs.lib.SpawnMap;
-import com.github.copiousdogs.network.DogDishHandler;
 import com.github.copiousdogs.network.MessageDogDish;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -54,15 +53,15 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid=Reference.MOD_ID, name="Copious Dogs", version=Reference.VERSION)
+@Mod(modid=Reference.MOD_ID, name=Reference.MOD_NAME, version=Reference.VERSION, guiFactory = Reference.GUI_FACTORY_CLASS)
 public class CopiousDogs 
 {
 
 	@Instance("copious_dogs")
 	public static CopiousDogs instance;
 	
-	@SidedProxy(clientSide = "com.github.copiousdogs.client.ClientProxy",
-			serverSide = "com.github.copiousdogs.CommonProxy")
+	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS,
+			serverSide = Reference.COMMON_PROXY_CLASS)
 	public static CommonProxy proxy;
 	
 	public static CreativeTabs tabCopiousDogs = new CreativeTabs("tabCopiousDogs")
@@ -79,10 +78,7 @@ public class CopiousDogs
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-		
-		ConfigInfo.INDIVIDUAL_TRAITS = config.getBoolean("randomized traits", "Dog Behavior", true, "Tells wether the dogs should have randomized individual traits or not");
-		ConfigInfo.DOG_SPAWN_PROB = config.getInt("dog spawn probability", "Spawning", 10, 0, 100, "The weighted probability value for dog spawning. Higher value means more frequent spawning. Set to 0 to disable spawning.");
+		ConfigurationHandler.init(event.getSuggestedConfigurationFile());
 		
 		snw = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.CHANNEL_NAME);
 		
@@ -145,7 +141,8 @@ public class CopiousDogs
 				{
 					for (Class<? extends EntityLiving> clazz : classes)
 					{
-						EntityRegistry.addSpawn(clazz, ConfigInfo.DOG_SPAWN_PROB, 2, 6, EnumCreatureType.creature, biome);
+						EntityRegistry.addSpawn(clazz, ConfigurationHandler.DOG_SPAWN_PROB, 2, 6, EnumCreatureType.creature, biome);
+						System.out.println("CAAAAAAAAAAAAALLLLLLLLLLLLLLLLLLLLLLLEEEEEEEEEEEED!!!!");
 					}
 				}
 			}
