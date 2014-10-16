@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
 import com.github.copiousdogs.content.CopiousDogsItems;
+import com.github.copiousdogs.entity.ai.EntityAIBegBiscuit;
 import com.github.copiousdogs.entity.ai.EntityAIEatDogDish;
 import com.github.copiousdogs.entity.ai.EntityAIFollowOwnerLeashed;
 import com.github.copiousdogs.entity.ai.EntityAIHurtByTargetBOA;
@@ -39,6 +40,9 @@ import com.github.copiousdogs.entity.ai.EntityAITargetNonTamedBOA;
 import com.github.copiousdogs.entity.ai.EntityAIWanderBOE;
 import com.github.copiousdogs.handler.ConfigurationHandler;
 import com.github.copiousdogs.item.ItemDogCollar;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityDog extends EntityTameable
 {
@@ -80,9 +84,10 @@ public class EntityDog extends EntityTameable
 		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, .75f, true));
 		this.tasks.addTask(5, new EntityAIEatDogDish(this, 5, walkSpeed));
 		this.tasks.addTask(6, new EntityAIFollowOwnerLeashed(this, runSpeed, 2f, 5f));
-		this.tasks.addTask(7, new EntityAIWanderBOE(this, walkSpeed, runSpeed));
-		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 0f));
-		this.tasks.addTask(9, new EntityAILookIdle(this));
+		this.tasks.addTask(7, new EntityAIBegBiscuit(this, 10F));
+		this.tasks.addTask(8, new EntityAIWanderBOE(this, walkSpeed, runSpeed));
+		this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 0f));
+		this.tasks.addTask(10, new EntityAILookIdle(this));
 		this.targetTasks.addTask(0, new EntityAIOwnerHurtByTargetBOA(this));
 		this.targetTasks.addTask(1, new EntityAIOwnerHurtTargetBOA(this));
 		this.targetTasks.addTask(2, new EntityAIHurtByTargetBOA(this, false));
@@ -97,6 +102,20 @@ public class EntityDog extends EntityTameable
 		getAttributeMap().registerAttribute(energy);
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(15);
 	}
+	
+    @SideOnly(Side.CLIENT)
+    protected void spawnDogParticles(boolean p_110216_1_)
+    {
+        String s = p_110216_1_ ? "heart" : "smoke";
+
+        for (int i = 0; i < 7; ++i)
+        {
+            double d0 = this.rand.nextGaussian() * 0.02D;
+            double d1 = this.rand.nextGaussian() * 0.02D;
+            double d2 = this.rand.nextGaussian() * 0.02D;
+            this.worldObj.spawnParticle(s, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+        }
+    }
 	
 	@Override
 	protected float getSoundPitch()
@@ -180,6 +199,19 @@ public class EntityDog extends EntityTameable
 		}
 	}
 	
+	public boolean isBegging() 
+	{
+		return (this.dataWatcher.getWatchableObjectByte(18) & 4) != 0;
+	}
+	
+	public void setBegging(boolean par0)
+	{
+		if (isBegging() != par0) 
+		{
+			this.dataWatcher.updateObject(18, (byte) (this.dataWatcher.getWatchableObjectByte(18) + (par0 ? 4: -4)));
+		}
+	}
+	
 	public double getAggressiveness()
 	{
 		return getEntityAttribute(aggressiveness).getAttributeValue();
@@ -256,11 +288,11 @@ public class EntityDog extends EntityTameable
 		{
 			setTamed(true);
 			func_152115_b(player.getUniqueID().toString());
-			playTameEffect(true);
+			spawnDogParticles(true);
 		}
 		else
 		{
-			playTameEffect(false);
+			spawnDogParticles(false);
 		}
 	}
 	
@@ -304,8 +336,6 @@ public class EntityDog extends EntityTameable
 	@Override
 	public boolean interact(EntityPlayer player)
 	{
-		if (!this.worldObj.isRemote)
-		{
 			
 			ItemStack stack = player.getCurrentEquippedItem();
 			
@@ -430,7 +460,7 @@ public class EntityDog extends EntityTameable
 					}
 				}
 			}
-		}
+		
 		
 		return false;
 	}
@@ -459,6 +489,41 @@ public class EntityDog extends EntityTameable
 	public int getSecondaryEggColor()
 	{
 		return 0;
+	}
+	
+	@Override
+	public void onDeath(DamageSource source) {
+		
+		if (!this.worldObj.isRemote) {
+			
+			if (hasLeash()) {
+				
+				ItemStack stack = new ItemStack(CopiousDogsItems.leash, 1);
+				
+				EntityItem entity = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, stack);
+				
+				 float f3 = 0.05F;
+	             entity.motionX = (double)((float)this.getRNG().nextGaussian() * f3);
+	             entity.motionY = (double)((float)this.getRNG().nextGaussian() * f3 + 0.2F);
+	             entity.motionZ = (double)((float)this.getRNG().nextGaussian() * f3);
+	             worldObj.spawnEntityInWorld(entity);
+			}
+			
+			if (hasCollar()) {
+				
+				ItemStack stack = new ItemStack(CopiousDogsItems.dogCollar, 1, ItemDogCollar.getItemFromDye(getCollarColor()));
+				
+				EntityItem entity = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, stack);
+				
+				 float f3 = 0.05F;
+	             entity.motionX = (double)((float)this.getRNG().nextGaussian() * f3);
+	             entity.motionY = (double)((float)this.getRNG().nextGaussian() * f3 + 0.2F);
+	             entity.motionZ = (double)((float)this.getRNG().nextGaussian() * f3);
+	             worldObj.spawnEntityInWorld(entity);
+			}
+		}
+		
+		super.onDeath(source);
 	}
 	
 	@Override

@@ -142,7 +142,6 @@ public class CopiousDogs
 					for (Class<? extends EntityLiving> clazz : classes)
 					{
 						EntityRegistry.addSpawn(clazz, ConfigurationHandler.DOG_SPAWN_PROB, 2, 6, EnumCreatureType.creature, biome);
-						System.out.println("CAAAAAAAAAAAAALLLLLLLLLLLLLLLLLLLLLLLEEEEEEEEEEEED!!!!");
 					}
 				}
 			}

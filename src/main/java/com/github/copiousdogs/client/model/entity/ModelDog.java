@@ -111,6 +111,15 @@ public class ModelDog extends ModelBase
 			model.tailRotY = 0;
 		}
 		
+		if (entity.isBegging())
+		{
+			model.headRotZ = (float)Math.PI / 8.0f;
+		}
+		else
+		{
+			model.headRotZ = 0f;
+		}
+		
 		if (entity.isSitting()) {
 
 			ModelBox box = (ModelBox)model.Leg1.cubeList.get(0);
