@@ -1,11 +1,20 @@
 #Creative tabs
 itemGroup.tabCopiousDogs=Copious Dogs
 
+#GUIs
+gui.copiousdogs.namedog=Name your dog!
+gui.copiousdogs.rename=Rename
+gui.copiousdogs.breed=Breed
+gui.copiousdogs.energy=Energy
+gui.copiousdogs.aggressiveness=Aggressiveness
+gui.copiousdogs.done=Done
+
 #Items
 item.copiousdogs.dogBiscuit.name=Dog Biscuit
 item.copiousdogs.dogCollar.name=Dog Collar
 item.copiousdogs.dogDish.name=Dog Dish
 item.copiousdogs.leash.name=Leash
+item.copiousdogs.analyzer.name=Analyzer
 
 #Entities
 entity.CopiousDogs.beagle.name=Beagle

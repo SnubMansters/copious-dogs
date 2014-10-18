@@ -1,5 +1,6 @@
 package com.github.copiousdogs;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -32,6 +33,8 @@ public class CommonProxy
 				'I', Item.itemRegistry.getObject("iron_ingot"), 'B', Item.itemRegistry.getObject("bucket"));
 		GameRegistry.addRecipe(new ItemStack(CopiousDogsItems.leash, 1), "SS", "SS", "SS",
 				'S', Item.itemRegistry.getObject("string"));
+		GameRegistry.addRecipe(new ItemStack(CopiousDogsItems.analyzer, 1), "III", "RGR", "IRI",
+				'I', Item.itemRegistry.getObject("iron_ingot"), 'R', Item.itemRegistry.getObject("redstone"), 'G', Block.blockRegistry.getObject("glass_pane"));
 		
 		for (int i = 0; i < 16; i++) {
 			

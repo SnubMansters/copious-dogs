@@ -110,7 +110,7 @@ public class RenderDog extends RenderLiving
 	{
 		if (entity instanceof EntityDog)
 		{
-			return new ResourceLocation(Reference.MOD_ID
+			return new ResourceLocation(Reference.MOD_ID.toLowerCase()
 					+ ":textures/entities/"
 					+ ((EntityDog) entity).getTextureName() + ".png");
 		}
@@ -119,7 +119,7 @@ public class RenderDog extends RenderLiving
 
 	protected ResourceLocation getDogCollarTexture(EntityDog entity)
 	{
-		return new ResourceLocation(Reference.MOD_ID + ":textures/entities/"
+		return new ResourceLocation(Reference.MOD_ID.toLowerCase() + ":textures/entities/"
 				+ ((EntityDog) entity).getTextureName() + "_collar.png");
 	}
 }
