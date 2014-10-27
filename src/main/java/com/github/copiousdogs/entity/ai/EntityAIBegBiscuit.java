@@ -21,6 +21,7 @@ public class EntityAIBegBiscuit extends EntityAIBase {
 		this.dog = dog;
 		this.worldObject = dog.worldObj;
 		this.radius = radius;
+		setMutexBits(1);
 	}
 
 	@Override

@@ -96,6 +96,11 @@ public class GuiDogInfo extends GuiScreen {
 			
 			nameField.textboxKeyTyped(c, i);
 		}
+		
+		if (i == Keyboard.KEY_ESCAPE) {
+			
+			this.mc.displayGuiScreen(null);
+		}
 	}
 	
 	@Override
