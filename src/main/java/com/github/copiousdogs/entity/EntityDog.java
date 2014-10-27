@@ -37,8 +37,8 @@ import com.github.copiousdogs.entity.ai.EntityAIOwnerHurtByTargetBOA;
 import com.github.copiousdogs.entity.ai.EntityAIOwnerHurtTargetBOA;
 import com.github.copiousdogs.entity.ai.EntityAITargetNonTamedBOA;
 import com.github.copiousdogs.entity.ai.EntityAIWanderBOE;
+import com.github.copiousdogs.handler.ConfigurationHandler;
 import com.github.copiousdogs.item.ItemDogCollar;
-import com.github.copiousdogs.lib.ConfigInfo;
 
 public class EntityDog extends EntityTameable
 {
@@ -54,7 +54,7 @@ public class EntityDog extends EntityTameable
 	{
 		super(p_i1604_1_);
 		
-		if (ConfigInfo.INDIVIDUAL_TRAITS)
+		if (ConfigurationHandler.INDIVIDUAL_TRAITS)
 		{
 			double a = this.getRNG().nextDouble() * 10.0 + 1.0;
 			if (a < 1) a = 1;

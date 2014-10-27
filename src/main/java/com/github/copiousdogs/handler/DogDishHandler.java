@@ -1,10 +1,11 @@
-package com.github.copiousdogs.network;
+package com.github.copiousdogs.handler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
 import com.github.copiousdogs.block.BlockDogDish;
+import com.github.copiousdogs.network.MessageDogDish;
 import com.github.copiousdogs.tileentity.TileEntityDogDish;
 
 import cpw.mods.fml.common.FMLCommonHandler;

@@ -2,27 +2,27 @@
 itemGroup.tabCopiousDogs=Copious Dogs
 
 #Items
-item.copiousdogs.dogBiscuit.name=Dog Biscuit
-item.copiousdogs.dogCollar.name=Dog Collar
-item.copiousdogs.dogDish.name=Dog Dish
-item.copiousdogs.leash.name=Leash
+item.CopiousDogs.dogBiscuit.name=Dog Biscuit
+item.CopiousDogs.dogCollar.name=Dog Collar
+item.CopiousDogs.dogDish.name=Dog Dish
+item.CopiousDogs.leash.name=Leash
 
 #Entities
-entity.copiousdogs.beagle.name=Beagle
-entity.copiousdogs.bernese_mountain.name=Bernese Mountain
-entity.copiousdogs.golden_retriever.name=Golden Retriever
-entity.copiousdogs.husky.name=Husky
-entity.copiousdogs.chihuahua.name=Chihuahua
-entity.copiousdogs.french_bulldog.name=French Bulldog
-entity.copiousdogs.german_shepherd.name=German Shepherd
-entity.copiousdogs.dalmatian.name=Dalmatian
-entity.copiousdogs.great_dane.name=Great Dane
-entity.copiousdogs.boxer.name=Boxer
-entity.copiousdogs.cardigan_corgi.name=Cardigan Welsh Corgi
-entity.copiousdogs.collie.name=Collie
-entity.copiousdogs.doberman.name=Doberman Pinscher
-entity.copiousdogs.pomeranian.name=Pomeranian
-entity.copiousdogs.poodle.name=Poodle
-entity.copiousdogs.pug.name=Pug
-entity.copiousdogs.saint_bernard.name=Saint Bernard
-entity.copiousdogs.yorkshire.name=Yorkshire Terrier
+entity.CopiousDogs.beagle.name=Beagle
+entity.CopiousDogs.bernese_mountain.name=Bernese Mountain
+entity.CopiousDogs.golden_retriever.name=Golden Retriever
+entity.CopiousDogs.husky.name=Husky
+entity.CopiousDogs.chihuahua.name=Chihuahua
+entity.CopiousDogs.french_bulldog.name=French Bulldog
+entity.CopiousDogs.german_shepherd.name=German Shepherd
+entity.CopiousDogs.dalmatian.name=Dalmatian
+entity.CopiousDogs.great_dane.name=Great Dane
+entity.CopiousDogs.boxer.name=Boxer
+entity.CopiousDogs.cardigan_corgi.name=Cardigan Welsh Corgi
+entity.CopiousDogs.collie.name=Collie
+entity.CopiousDogs.doberman.name=Doberman Pinscher
+entity.CopiousDogs.pomeranian.name=Pomeranian
+entity.CopiousDogs.poodle.name=Poodle
+entity.CopiousDogs.pug.name=Pug
+entity.CopiousDogs.saint_bernard.name=Saint Bernard
+entity.CopiousDogs.yorkshire.name=Yorkshire Terrier
