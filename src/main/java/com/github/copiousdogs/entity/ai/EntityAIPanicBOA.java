@@ -17,6 +17,6 @@ public class EntityAIPanicBOA extends EntityAIPanic {
 	@Override
 	public boolean shouldExecute() {
 		
-		return super.shouldExecute() && dog.getAggressiveness() < 6 && dog.isTamed();
+		return super.shouldExecute() && dog.getAggressiveness() < 6 && !dog.isTamed();
 	}
 }
