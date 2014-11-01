@@ -17,6 +17,6 @@ public class EntityAIHurtByTargetBOA extends EntityAIHurtByTarget
 	@Override
 	public boolean shouldExecute()
 	{
-		return super.shouldExecute() && dog.getAggressiveness() >= 8;
+		return super.shouldExecute() && dog.getAggressiveness() >= 6;
 	}
 }
