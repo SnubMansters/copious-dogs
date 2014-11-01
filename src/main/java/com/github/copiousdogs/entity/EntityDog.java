@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
 import com.github.copiousdogs.content.CopiousDogsItems;
+import com.github.copiousdogs.entity.ai.EntityAIBegBiscuit;
 import com.github.copiousdogs.entity.ai.EntityAIEatDogDish;
 import com.github.copiousdogs.entity.ai.EntityAIFollowOwnerLeashed;
 import com.github.copiousdogs.entity.ai.EntityAIHurtByTargetBOA;
@@ -39,6 +40,9 @@ import com.github.copiousdogs.entity.ai.EntityAITargetNonTamedBOA;
 import com.github.copiousdogs.entity.ai.EntityAIWanderBOE;
 import com.github.copiousdogs.handler.ConfigurationHandler;
 import com.github.copiousdogs.item.ItemDogCollar;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityDog extends EntityTameable
 {
@@ -79,9 +83,10 @@ public class EntityDog extends EntityTameable
 		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, .75f, true));
 		this.tasks.addTask(5, new EntityAIEatDogDish(this, 5, walkSpeed));
 		this.tasks.addTask(6, new EntityAIFollowOwnerLeashed(this, runSpeed, 2f, 5f));
-		this.tasks.addTask(7, new EntityAIWanderBOE(this, walkSpeed, runSpeed));
-		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 0f));
-		this.tasks.addTask(9, new EntityAILookIdle(this));
+		this.tasks.addTask(7, new EntityAIBegBiscuit(this, 10f));
+		this.tasks.addTask(8, new EntityAIWanderBOE(this, walkSpeed, runSpeed));
+		this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 0f));
+		this.tasks.addTask(10, new EntityAILookIdle(this));
 		this.targetTasks.addTask(0, new EntityAIOwnerHurtByTargetBOA(this));
 		this.targetTasks.addTask(1, new EntityAIOwnerHurtTargetBOA(this));
 		this.targetTasks.addTask(2, new EntityAIHurtByTargetBOA(this, false));
@@ -97,10 +102,37 @@ public class EntityDog extends EntityTameable
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(15);
 	}
 	
+	@SideOnly(Side.CLIENT)
+	protected void spawnDogParticles(boolean b)
+	{
+		String s = b ? "heart" : "smoke";
+		
+		for (int i = 0; i < 7; ++i) {
+			
+			double d0 = rand.nextGaussian() * 0.02;
+			double d1 = rand.nextGaussian() * 0.02;
+			double d2 = rand.nextGaussian() * 0.02;
+			this.worldObj.spawnParticle(s, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+		}
+	}
+	
 	@Override
 	protected float getSoundPitch()
 	{
 		return 2f - this.height;
+	}
+	
+	public boolean isBegging()
+	{
+		return (this.dataWatcher.getWatchableObjectByte(18) & 4) != 0;
+	}
+	
+	public void setBegging(boolean par0) {
+		
+		if (isBegging() != par0) {
+			
+			this.dataWatcher.updateObject(18, (byte) (this.dataWatcher.getWatchableObjectByte(18) + (par0 ? 4 : -4)));
+		}
 	}
 	
 	@Override
@@ -255,11 +287,11 @@ public class EntityDog extends EntityTameable
 		{
 			setTamed(true);
 			setOwner(player.getCommandSenderName());
-			playTameEffect(true);
+			spawnDogParticles(true);
 		}
 		else
 		{
-			playTameEffect(false);
+			spawnDogParticles(false);
 		}
 	}
 	
@@ -303,135 +335,168 @@ public class EntityDog extends EntityTameable
 	@Override
 	public boolean interact(EntityPlayer player)
 	{
-		if (!this.worldObj.isRemote)
+
+			
+		ItemStack stack = player.getCurrentEquippedItem();
+		
+		if (stack != null)
 		{
-			
-			ItemStack stack = player.getCurrentEquippedItem();
-			
-			if (stack != null)
+			if (this.getOwner() != null && this.isBreedingItem(stack) && this.getGrowingAge() == 0 && !this.isInLove() 
+					&& this.isTamed() && this.getOwner() == player)
 			{
-				if (this.getOwner() != null && this.isBreedingItem(stack) && this.getGrowingAge() == 0 && !this.isInLove() 
-						&& this.isTamed() && this.getOwner() == player)
+				player.swingItem();
+				
+				if (!player.capabilities.isCreativeMode)
+				{
+					--stack.stackSize;
+				}
+				
+				this.func_146082_f(player);
+				return true;
+			}
+			if (stack.getItem() == CopiousDogsItems.dogBiscuit)
+			{
+				if (!isTamed())
 				{
 					player.swingItem();
 					
 					if (!player.capabilities.isCreativeMode)
 					{
-						--stack.stackSize;
+						setTameValue(getTameValue() + 3 + getRNG().nextInt(8));
+						tryToTame(player);
+						stack.stackSize--;
+					}
+					else 
+					{
+						setTameValue(10 + (int)getAggressiveness() + 1);
+						tryToTame(player);
 					}
 					
-					this.func_146082_f(player);
 					return true;
 				}
-				if (stack.getItem() == CopiousDogsItems.dogBiscuit)
+			}
+			if (stack.getItem() == CopiousDogsItems.dogCollar)
+			{
+				if (this.isTamed() && this.getOwner() == player)
 				{
-					if (!isTamed())
-					{
-						player.swingItem();
-						
-						if (!player.capabilities.isCreativeMode)
-						{
-							setTameValue(getTameValue() + 3 + getRNG().nextInt(8));
-							tryToTame(player);
-							stack.stackSize--;
-						}
-						else 
-						{
-							setTameValue(10 + (int)getAggressiveness() + 1);
-							tryToTame(player);
-						}
-						
-						return true;
-					}
-				}
-				if (stack.getItem() == CopiousDogsItems.dogCollar)
-				{
-					if (this.isTamed() && this.getOwner() == player)
-					{
-						player.swingItem();
-						byte color = getCollarColor();
+					player.swingItem();
+					byte color = getCollarColor();
 
-						setCollarColor((byte) ItemDogCollar.getDyeFromItem(stack.getItemDamage()));
+					setCollarColor((byte) ItemDogCollar.getDyeFromItem(stack.getItemDamage()));
+					
+					if (!player.capabilities.isCreativeMode)
+					{
+						stack.stackSize--;
+						
+						if (color > -1)
+						{
+							Random r = getRNG();
+							
+							ItemStack collar = new ItemStack(CopiousDogsItems.dogCollar, 1, ItemDogCollar.getItemFromDye(color));
+							EntityItem item = entityDropItem(collar, 1f);
+							item.motionX += rand.nextFloat() * .5f;
+							item.motionY += (rand.nextFloat() - rand.nextFloat()) * .1f;
+							item.motionZ += (rand.nextFloat() - rand.nextFloat()) * .1f;
+							
+							player.worldObj.spawnEntityInWorld(item);
+						}
+					}
+					
+					return true;
+				}
+			}
+			
+			if (stack.getItem() == CopiousDogsItems.leash)
+			{
+				if (hasCollar() && !hasLeash() && this.getOwner() == player)
+				{
+					player.swingItem();
+					setHasLeash(true);
+					
+					if (!player.capabilities.isCreativeMode)
+					{
+						stack.stackSize--;
+					}
+					
+					return true;
+				}
+			}
+		}
+		else {
+
+			if (isTamed() && getOwner() != null && this.getOwner() == player) 
+			{
+				if (player.isSneaking())
+				{
+					if (hasLeash())
+					{
+						setHasLeash(false);
 						
 						if (!player.capabilities.isCreativeMode)
 						{
-							stack.stackSize--;
+							player.inventory.addItemStackToInventory(new ItemStack(CopiousDogsItems.leash, 1));
+						}
+					}
+					else if (hasCollar())
+					{
+						byte color = getCollarColor();
 							
+						setCollarColor((byte) -1);
+							
+						if (!player.capabilities.isCreativeMode)
+						{
 							if (color > -1)
 							{
 								Random r = getRNG();
-								
-								ItemStack collar = new ItemStack(CopiousDogsItems.dogCollar, 1, ItemDogCollar.getItemFromDye(color));
-								EntityItem item = entityDropItem(collar, 1f);
-								item.motionX += rand.nextFloat() * .5f;
-								item.motionY += (rand.nextFloat() - rand.nextFloat()) * .1f;
-								item.motionZ += (rand.nextFloat() - rand.nextFloat()) * .1f;
-								
-								player.worldObj.spawnEntityInWorld(item);
+									
+								player.inventory.addItemStackToInventory(new ItemStack(CopiousDogsItems.dogCollar, 1, ItemDogCollar.getItemFromDye(color)));
 							}
-						}
-						
-						return true;
+						}	
 					}
 				}
-				
-				if (stack.getItem() == CopiousDogsItems.leash)
-				{
-					if (hasCollar() && !hasLeash() && this.getOwner() == player)
-					{
-						player.swingItem();
-						setHasLeash(true);
-						
-						if (!player.capabilities.isCreativeMode)
-						{
-							stack.stackSize--;
-						}
-						
-						return true;
-					}
-				}
-			}
-			else {
-
-				if (isTamed() && getOwner() != null && this.getOwner() == player) 
-				{
-					if (player.isSneaking())
-					{
-						if (hasLeash())
-						{
-							setHasLeash(false);
-							
-							if (!player.capabilities.isCreativeMode)
-							{
-								player.inventory.addItemStackToInventory(new ItemStack(CopiousDogsItems.leash, 1));
-							}
-						}
-						else if (hasCollar())
-						{
-							byte color = getCollarColor();
-								
-							setCollarColor((byte) -1);
-								
-							if (!player.capabilities.isCreativeMode)
-							{
-								if (color > -1)
-								{
-									Random r = getRNG();
-										
-									player.inventory.addItemStackToInventory(new ItemStack(CopiousDogsItems.dogCollar, 1, ItemDogCollar.getItemFromDye(color)));
-								}
-							}	
-						}
-					}
-					else {
-						setSitting(!isSitting());
-						this.aiSit.setSitting(isSitting());
-					}
+				else {
+					setSitting(!isSitting());
+					this.aiSit.setSitting(isSitting());
 				}
 			}
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public void onDeath(DamageSource source) {
+		
+		if (!this.worldObj.isRemote) {
+			
+			if (hasLeash()) {
+				
+				ItemStack stack = new ItemStack(CopiousDogsItems.leash, 1);
+				
+				EntityItem entity = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, stack);
+				
+				 float f3 = 0.05F;
+	             entity.motionX = (double)((float)this.getRNG().nextGaussian() * f3);
+	             entity.motionY = (double)((float)this.getRNG().nextGaussian() * f3 + 0.2F);
+	             entity.motionZ = (double)((float)this.getRNG().nextGaussian() * f3);
+	             worldObj.spawnEntityInWorld(entity);
+			}
+			
+			if (hasCollar()) {
+				
+				ItemStack stack = new ItemStack(CopiousDogsItems.dogCollar, 1, ItemDogCollar.getItemFromDye(getCollarColor()));
+				
+				EntityItem entity = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, stack);
+				
+				 float f3 = 0.05F;
+	             entity.motionX = (double)((float)this.getRNG().nextGaussian() * f3);
+	             entity.motionY = (double)((float)this.getRNG().nextGaussian() * f3 + 0.2F);
+	             entity.motionZ = (double)((float)this.getRNG().nextGaussian() * f3);
+	             worldObj.spawnEntityInWorld(entity);
+			}
+		}
+		
+		super.onDeath(source);
 	}
 	
 	@Override

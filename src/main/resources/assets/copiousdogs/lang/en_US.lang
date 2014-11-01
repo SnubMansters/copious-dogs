@@ -2,10 +2,10 @@
 itemGroup.tabCopiousDogs=Copious Dogs
 
 #Items
-item.CopiousDogs.dogBiscuit.name=Dog Biscuit
-item.CopiousDogs.dogCollar.name=Dog Collar
-item.CopiousDogs.dogDish.name=Dog Dish
-item.CopiousDogs.leash.name=Leash
+item.copiousdogs.dogBiscuit.name=Dog Biscuit
+item.copiousdogs.dogCollar.name=Dog Collar
+item.copiousdogs.dogDish.name=Dog Dish
+item.copiousdogs.leash.name=Leash
 
 #Entities
 entity.CopiousDogs.beagle.name=Beagle
