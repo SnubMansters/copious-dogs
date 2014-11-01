@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
@@ -28,6 +29,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
+import com.github.copiousdogs.client.gui.GuiDogInfo;
+import com.github.copiousdogs.client.gui.GuiNameDog;
 import com.github.copiousdogs.content.CopiousDogsItems;
 import com.github.copiousdogs.entity.ai.EntityAIBegBiscuit;
 import com.github.copiousdogs.entity.ai.EntityAIEatDogDish;
@@ -288,6 +291,11 @@ public class EntityDog extends EntityTameable
 			setTamed(true);
 			setOwner(player.getCommandSenderName());
 			spawnDogParticles(true);
+			
+			if (worldObj.isRemote) {
+				
+				Minecraft.getMinecraft().displayGuiScreen(new GuiNameDog(this));
+			}
 		}
 		else
 		{
@@ -418,6 +426,15 @@ public class EntityDog extends EntityTameable
 						stack.stackSize--;
 					}
 					
+					return true;
+				}
+			}
+			
+			if (stack.getItem() == CopiousDogsItems.analyzer) {
+				
+				if (isTamed() && this.getOwner() == player) {
+					
+					Minecraft.getMinecraft().displayGuiScreen(new GuiDogInfo(this));
 					return true;
 				}
 			}

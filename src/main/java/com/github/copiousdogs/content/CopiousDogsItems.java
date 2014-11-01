@@ -1,5 +1,6 @@
 package com.github.copiousdogs.content;
 
+import com.github.copiousdogs.item.ItemAnalyzer;
 import com.github.copiousdogs.item.ItemCopiousDogs;
 import com.github.copiousdogs.item.ItemDogBiscuit;
 import com.github.copiousdogs.item.ItemDogCollar;
@@ -12,11 +13,13 @@ public class CopiousDogsItems {
 	public static ItemCopiousDogs dogBiscuit = new ItemDogBiscuit();
 	public static ItemCopiousDogs dogCollar = new ItemDogCollar();
 	public static ItemCopiousDogs leash = new ItemLeash();
+	public static ItemCopiousDogs analyzer = new ItemAnalyzer();
 	
 	public static void init() {
 		
 		GameRegistry.registerItem(dogBiscuit, "dogBiscuit");
 		GameRegistry.registerItem(dogCollar, "dogCollar");
 		GameRegistry.registerItem(leash, "leash");
+		GameRegistry.registerItem(analyzer, "analyzer");
 	}
 }

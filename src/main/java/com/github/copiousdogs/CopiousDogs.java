@@ -57,7 +57,7 @@ import cpw.mods.fml.relauncher.Side;
 public class CopiousDogs 
 {
 
-	@Instance("copious_dogs")
+	@Instance("CopiousDogs")
 	public static CopiousDogs instance;
 	
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS,
