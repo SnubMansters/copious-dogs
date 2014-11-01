@@ -39,6 +39,7 @@ import com.github.copiousdogs.entity.ai.EntityAIHurtByTargetBOA;
 import com.github.copiousdogs.entity.ai.EntityAIMateNearTorch;
 import com.github.copiousdogs.entity.ai.EntityAIOwnerHurtByTargetBOA;
 import com.github.copiousdogs.entity.ai.EntityAIOwnerHurtTargetBOA;
+import com.github.copiousdogs.entity.ai.EntityAIPanicBOA;
 import com.github.copiousdogs.entity.ai.EntityAITargetNonTamedBOA;
 import com.github.copiousdogs.entity.ai.EntityAIWanderBOE;
 import com.github.copiousdogs.handler.ConfigurationHandler;
@@ -80,9 +81,10 @@ public class EntityDog extends EntityTameable
 		
 		this.getNavigator().setAvoidsWater(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, this.aiSit);
+		this.tasks.addTask(1, new EntityAIPanicBOA(this, runSpeed * 1.4f));
+		this.tasks.addTask(2, this.aiSit);
 		this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.35f));
-		this.tasks.addTask(2, new EntityAIMateNearTorch(this, walkSpeed, 10f));
+		this.tasks.addTask(3, new EntityAIMateNearTorch(this, walkSpeed, 10f));
 		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, .75f, true));
 		this.tasks.addTask(5, new EntityAIEatDogDish(this, 5, walkSpeed));
 		this.tasks.addTask(6, new EntityAIFollowOwnerLeashed(this, runSpeed, 2f, 5f));
