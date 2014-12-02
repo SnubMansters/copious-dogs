@@ -2,6 +2,7 @@
 itemGroup.tabCopiousDogs=Copious Dogs
 
 #GUIs
+gui.copiousdogs.health=Health
 gui.copiousdogs.namedog=Name your dog!
 gui.copiousdogs.rename=Rename
 gui.copiousdogs.breed=Breed
@@ -15,6 +16,7 @@ item.copiousdogs.dogCollar.name=Dog Collar
 item.copiousdogs.dogDish.name=Dog Dish
 item.copiousdogs.leash.name=Leash
 item.copiousdogs.analyzer.name=Analyzer
+item.copiousdogs.whistle.name=Dog Whistle
 
 #Entities
 entity.CopiousDogs.beagle.name=Beagle

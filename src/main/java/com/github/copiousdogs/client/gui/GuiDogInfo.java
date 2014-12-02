@@ -72,17 +72,21 @@ public class GuiDogInfo extends GuiScreen {
 
 		this.drawBackground(0);
 		
-		this.fontRendererObj.drawString(String.format("%s: %s", 
-				I18n.format("gui.copiousdogs.breed", new Object[0]), I18n.format("entity." + Reference.MOD_ID + "." + dog.getBreed() + ".name", new Object[0])),
+		this.fontRendererObj.drawString(String.format("%s: %.0f",
+				I18n.format("gui.copiousdogs.health", new Object[0]), dog.getHealth()),
 				this.width / 2 - 95, this.height / 2 - 70, 0xFFFFFF);
 		
-		this.fontRendererObj.drawString(String.format("%s: %.2f", 
-				I18n.format("gui.copiousdogs.energy", new Object[0]), dog.getEnergy()),
+		this.fontRendererObj.drawString(String.format("%s: %s", 
+				I18n.format("gui.copiousdogs.breed", new Object[0]), I18n.format("entity." + Reference.MOD_ID + "." + dog.getBreed() + ".name", new Object[0])),
 				this.width / 2 - 95, this.height / 2 - 60, 0xFFFFFF);
 		
 		this.fontRendererObj.drawString(String.format("%s: %.2f", 
-				I18n.format("gui.copiousdogs.aggressiveness", new Object[0]), dog.getAggressiveness()),
+				I18n.format("gui.copiousdogs.energy", new Object[0]), dog.getEnergy()),
 				this.width / 2 - 95, this.height / 2 - 50, 0xFFFFFF);
+		
+		this.fontRendererObj.drawString(String.format("%s: %.2f", 
+				I18n.format("gui.copiousdogs.aggressiveness", new Object[0]), dog.getAggressiveness()),
+				this.width / 2 - 95, this.height / 2 - 40, 0xFFFFFF);
 		
 		nameField.drawTextBox();
 		

@@ -69,6 +69,24 @@ public class ModelDog extends ModelBase
 		new ModelSaintBernardPup();
 		new ModelYorkshire();
 		new ModelYorkshirePup();
+		new ModelAmericanBulldog();
+		new ModelAmericanBulldogPup();
+		new ModelEskimoSpitz();
+		new ModelEskimoSpitzPup();
+		new ModelAustralianShepherd();
+		new ModelAustralianShepherdPup();
+		new ModelBloodhound();
+		new ModelBloodhoundPup();
+		new ModelDachshund();
+		new ModelDachshundPup();
+		new ModelNewfoundland();
+		new ModelNewfoundlandPup();
+		new ModelPapillon();
+		new ModelPapillonPup();
+		new ModelPembroke();
+		new ModelPembrokePup();
+		new ModelPitbull();
+		new ModelPitbullPup();
 	}
 	
 	public ModelDog() {};

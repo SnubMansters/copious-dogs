@@ -40,6 +40,7 @@ import com.github.copiousdogs.entity.ai.EntityAIMateNearTorch;
 import com.github.copiousdogs.entity.ai.EntityAIOwnerHurtByTargetBOA;
 import com.github.copiousdogs.entity.ai.EntityAIOwnerHurtTargetBOA;
 import com.github.copiousdogs.entity.ai.EntityAIPanicBOA;
+import com.github.copiousdogs.entity.ai.EntityAIReturnToOwner;
 import com.github.copiousdogs.entity.ai.EntityAITargetNonTamedBOA;
 import com.github.copiousdogs.entity.ai.EntityAIWanderBOE;
 import com.github.copiousdogs.handler.ConfigurationHandler;
@@ -84,6 +85,7 @@ public class EntityDog extends EntityTameable
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanicBOA(this, runSpeed * 1.4f));
 		this.tasks.addTask(2, this.aiSit);
+		//this.tasks.addTask(2, new EntityAIReturnToOwner(this, runSpeed));
 		this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.35f));
 		this.tasks.addTask(3, new EntityAIMateNearTorch(this, walkSpeed, 10f));
 		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, .75f, true));
@@ -214,6 +216,19 @@ public class EntityDog extends EntityTameable
 		if (isBegging() != par0) 
 		{
 			this.dataWatcher.updateObject(18, (byte) (this.dataWatcher.getWatchableObjectByte(18) + (par0 ? 4: -4)));
+		}
+	}
+	
+	public boolean isWhistled()
+	{
+		return (this.dataWatcher.getWatchableObjectByte(18) & 8) != 0;
+	}
+	
+	public void setWhistled(boolean par0)
+	{
+		if (isWhistled() != par0)
+		{
+			this.dataWatcher.updateObject(18, (byte) (this.dataWatcher.getWatchableObjectByte(18) + (par0 ? 8: -8)));
 		}
 	}
 	

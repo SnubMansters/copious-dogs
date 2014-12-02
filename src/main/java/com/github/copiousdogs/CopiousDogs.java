@@ -16,19 +16,28 @@ import com.github.copiousdogs.client.model.entity.ModelDog;
 import com.github.copiousdogs.content.CopiousDogsBlocks;
 import com.github.copiousdogs.content.CopiousDogsItems;
 import com.github.copiousdogs.content.CopiousDogsTileEntities;
+import com.github.copiousdogs.entity.EntityAmericanBulldog;
+import com.github.copiousdogs.entity.EntityAustralianShepherd;
 import com.github.copiousdogs.entity.EntityBeagle;
 import com.github.copiousdogs.entity.EntityBerneseMountain;
+import com.github.copiousdogs.entity.EntityBloodhound;
 import com.github.copiousdogs.entity.EntityBoxer;
 import com.github.copiousdogs.entity.EntityCardiganCorgi;
 import com.github.copiousdogs.entity.EntityChihuahua;
 import com.github.copiousdogs.entity.EntityCollie;
+import com.github.copiousdogs.entity.EntityDachshund;
 import com.github.copiousdogs.entity.EntityDalmatian;
 import com.github.copiousdogs.entity.EntityDoberman;
+import com.github.copiousdogs.entity.EntityEskimoSpitz;
 import com.github.copiousdogs.entity.EntityFrenchBulldog;
 import com.github.copiousdogs.entity.EntityGermanShepherd;
 import com.github.copiousdogs.entity.EntityGoldenRetriever;
 import com.github.copiousdogs.entity.EntityGreatDane;
 import com.github.copiousdogs.entity.EntityHusky;
+import com.github.copiousdogs.entity.EntityNewfoundland;
+import com.github.copiousdogs.entity.EntityPapillon;
+import com.github.copiousdogs.entity.EntityPembroke;
+import com.github.copiousdogs.entity.EntityPitbull;
 import com.github.copiousdogs.entity.EntityPomeranian;
 import com.github.copiousdogs.entity.EntityPoodle;
 import com.github.copiousdogs.entity.EntityPug;
@@ -99,6 +108,10 @@ public class CopiousDogs
 		SpawnMap.registerSpawnBiomes(EntityGoldenRetriever.class, Type.PLAINS, Type.SPARSE);
 		SpawnMap.registerSpawnBiomes(EntityBoxer.class, Type.PLAINS, Type.SPARSE);
 		SpawnMap.registerSpawnBiomes(EntityYorkshire.class, Type.PLAINS, Type.SPARSE);
+		SpawnMap.registerSpawnBiomes(EntityAustralianShepherd.class, Type.PLAINS, Type.SPARSE);
+		SpawnMap.registerSpawnBiomes(EntityDachshund.class, Type.PLAINS, Type.DRY, Type.SPARSE);
+		SpawnMap.registerSpawnBiomes(EntityPapillon.class, Type.PLAINS, Type.SPARSE);
+		SpawnMap.registerSpawnBiomes(EntityPitbull.class, Type.PLAINS, Type.SPARSE);
 		SpawnMap.registerSpawnBiomes(EntityCollie.class, Type.PLAINS, Type.FOREST, Type.HILLS, Type.MOUNTAIN);
 		SpawnMap.registerSpawnBiomes(EntityPoodle.class, Type.PLAINS, Type.FOREST, Type.HILLS, Type.LUSH);
 		SpawnMap.registerSpawnBiomes(EntityBeagle.class, Type.FOREST, Type.LUSH);
@@ -106,11 +119,16 @@ public class CopiousDogs
 		SpawnMap.registerSpawnBiomes(EntityDoberman.class, Type.FOREST, Type.LUSH);
 		SpawnMap.registerSpawnBiomes(EntityPomeranian.class, Type.FOREST, Type.LUSH);
 		SpawnMap.registerSpawnBiomes(EntityPug.class, Type.FOREST, Type.LUSH);
+		SpawnMap.registerSpawnBiomes(EntityAmericanBulldog.class, Type.FOREST, Type.LUSH);
+		SpawnMap.registerSpawnBiomes(EntityBloodhound.class, Type.FOREST, Type.LUSH);
+		SpawnMap.registerSpawnBiomes(EntityNewfoundland.class, Type.FOREST, Type.LUSH);
 		SpawnMap.registerSpawnBiomes(EntityBerneseMountain.class, Type.HILLS, Type.MOUNTAIN);
 		SpawnMap.registerSpawnBiomes(EntityGreatDane.class, Type.HILLS, Type.MOUNTAIN);
 		SpawnMap.registerSpawnBiomes(EntityCardiganCorgi.class, Type.HILLS, Type.MOUNTAIN);
 		SpawnMap.registerSpawnBiomes(EntitySaintBernard.class, Type.HILLS, Type.MOUNTAIN, Type.COLD);
+		SpawnMap.registerSpawnBiomes(EntityPembroke.class, Type.HILLS, Type.MOUNTAIN);
 		SpawnMap.registerSpawnBiomes(EntityHusky.class, Type.COLD);
+		SpawnMap.registerSpawnBiomes(EntityEskimoSpitz.class, Type.COLD);
 	}
 	
 	@EventHandler
@@ -221,5 +239,42 @@ public class CopiousDogs
 		EntityRegistry.registerModEntity(EntityYorkshire.class, "yorkshire", 17, this, 40, 3, true);
 		EntityList.IDtoClassMapping.put(17, EntityYorkshire.class);
 		EntityList.entityEggs.put(17, new EntityEggInfo(17, 0x1F1E1D, 0x805234));
+		
+		EntityRegistry.registerModEntity(EntityAmericanBulldog.class, "american_bulldog", 18, this, 40, 3, true);
+		EntityList.IDtoClassMapping.put(18, EntityAmericanBulldog.class);
+		EntityList.entityEggs.put(18, new EntityEggInfo(18, 0xC6C0BE, 0x8A5D40));
+		
+		EntityRegistry.registerModEntity(EntityEskimoSpitz.class, "eskimo_spitz", 19, this, 40, 3, true);
+		EntityList.IDtoClassMapping.put(19, EntityEskimoSpitz.class);
+		EntityList.entityEggs.put(19, new EntityEggInfo(19, 0xE9E2E0, 0xD5D0D3));
+		
+		EntityRegistry.registerModEntity(EntityAustralianShepherd.class, "australian_shepherd", 20, this, 40, 3, true);
+		EntityList.IDtoClassMapping.put(20, EntityAustralianShepherd.class);
+		EntityList.entityEggs.put(20, new EntityEggInfo(20, 0xA9AEAE, 0x1E272C));
+		
+		EntityRegistry.registerModEntity(EntityBloodhound.class, "bloodhound", 21, this, 40, 3, true);
+		EntityList.IDtoClassMapping.put(21, EntityBloodhound.class);
+		EntityList.entityEggs.put(21, new EntityEggInfo(21, 0xB97530, 0x1E1816));
+		
+		EntityRegistry.registerModEntity(EntityDachshund.class, "dachshund", 22, this, 40, 3, true);
+		EntityList.IDtoClassMapping.put(22, EntityDachshund.class);
+		EntityList.entityEggs.put(22, new EntityEggInfo(22, 0x1C202E, 0x8F5E40));
+		
+		EntityRegistry.registerModEntity(EntityNewfoundland.class, "newfoundland", 23, this, 40, 3, true);
+		EntityList.IDtoClassMapping.put(23, EntityNewfoundland.class);
+		EntityList.entityEggs.put(23, new EntityEggInfo(23, 0x161E18, 0x383E3C));
+		
+		EntityRegistry.registerModEntity(EntityPapillon.class, "papillon", 24, this, 40, 3, true);
+		EntityList.IDtoClassMapping.put(24, EntityPapillon.class);
+		EntityList.entityEggs.put(24, new EntityEggInfo(24, 0xDDDEDC, 0x8B5832));
+		
+		EntityRegistry.registerModEntity(EntityPembroke.class, "pembroke", 25, this, 40, 3, true);
+		EntityList.IDtoClassMapping.put(25, EntityPembroke.class);
+		EntityList.entityEggs.put(25, new EntityEggInfo(25, 0xA56E40, 0xDCC8B2));
+		
+		EntityRegistry.registerModEntity(EntityPitbull.class, "pitbull", 26, this, 40, 3, true);
+		EntityList.IDtoClassMapping.put(26, EntityPitbull.class);
+		EntityList.entityEggs.put(26, new EntityEggInfo(26, 0x615655, 0x897C7C));
+		
 	}
 }
