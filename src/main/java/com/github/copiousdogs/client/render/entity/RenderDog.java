@@ -14,6 +14,7 @@ import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 
 import com.github.copiousdogs.entity.EntityDog;
+import com.github.copiousdogs.entity.EntityPoodle;
 import com.github.copiousdogs.item.ItemDogCollar;
 import com.github.copiousdogs.lib.Reference;
 
@@ -32,7 +33,7 @@ public class RenderDog extends RenderLiving
 		if (entity instanceof EntityDog)
 		{
 			EntityDog dog = (EntityDog) entity;
-
+			
 			float f1;
 			if (i0 == 1 && dog.isTamed() && dog.hasCollar())
 			{
@@ -42,6 +43,20 @@ public class RenderDog extends RenderLiving
 				float[] color = EntitySheep.fleeceColorTable[j];
 				GL11.glColor3f(f1 * color[0], f1 * color[1], f1 * color[2]);
 				return 1;
+			}
+			if (i0 == 0) {
+				
+				if (dog instanceof EntityPoodle) {
+					
+					EntityPoodle poodle = (EntityPoodle) dog;
+					bindTexture(poodle.getColorTexture());
+					f1 = poodle.getColor() != 0 ? 0.9f:1f;
+					float[] color = EntitySheep.fleeceColorTable[poodle.getColor()];
+					GL11.glColor3f(f1 * color[0], f1 * color[1], f1 * color[2]);
+					float scale = 1f;
+					GL11.glScalef(scale, scale, scale);
+					return 1;
+				}
 			}
 		}
 		return -1;
