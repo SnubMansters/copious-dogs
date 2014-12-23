@@ -20,6 +20,7 @@ public class EntityAIEatDogDish extends EntityAIBase
 		this.dog = dog;
 		this.radius = radius;
 		this.moveSpeed = moveSpeed;
+		setMutexBits(255);
 	}
 	
 	@Override
@@ -36,8 +37,6 @@ public class EntityAIEatDogDish extends EntityAIBase
 					dish = d;
 					dog.getNavigator().setPath(dog.getNavigator().getPathToXYZ(d.xCoord, d.yCoord, d.zCoord), moveSpeed);
 					eatingTicks = (int)(dog.getMaxHealth() - dog.getHealth()) * 2;
-					
-					System.out.println(dog.getHealth() + " " + dog.getMaxHealth() + " " + eatingTicks);
 					
 					return true;
 				}
@@ -56,18 +55,26 @@ public class EntityAIEatDogDish extends EntityAIBase
 	@Override
 	public void updateTask()
 	{
-		if (dog.getDistanceSq(dish.xCoord, dish.yCoord, dish.zCoord) < 1.5f)
+		System.out.println(dog.getDistance(dish.xCoord, dish.yCoord, dish.zCoord));
+		System.out.println(dog.getNavigator().noPath());
+		
+		if (dog.getDistance(dish.xCoord, dish.yCoord, dish.zCoord) < 2f && dog.getNavigator().noPath())
 		{
+			
+			System.out.println("1f");
 			dog.getNavigator().clearPathEntity();
 			dog.setEating(true);
-			dog.getLookHelper().setLookPosition(dish.xCoord, dish.yCoord - .8F, dish.zCoord, 10F, dog.getVerticalFaceSpeed());
-			eatingTicks--;
-			
-			if (eatingTicks % 2 == 0) {
+			dog.getLookHelper().setLookPosition(dish.xCoord + 0.5f, dish.yCoord - 1f, dish.zCoord + 0.5f, 10F, dog.getVerticalFaceSpeed());
+			eatingTicks++;
+			if (eatingTicks % 4 == 0) {
 				dog.heal(dish.eat(1));
 			}
 			
-			if (dog.getHealth() == dog.getMaxHealth()) dog.setEating(false);
+			if (dog.getHealth() == dog.getMaxHealth()) {
+				
+				eatingTicks = 0;
+				dog.setEating(false);
+			}
 		}
 	}
 	

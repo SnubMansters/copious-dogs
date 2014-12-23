@@ -37,6 +37,11 @@ public class EntityPoodle extends EntityDog {
 		return this.dataWatcher.getWatchableObjectInt(22);
 	}
 	
+	private void setColor(int color) {
+		
+		this.dataWatcher.updateObject(22, color);
+	}
+	
 	@Override
 	public boolean interact(EntityPlayer player) {
 		
@@ -46,7 +51,16 @@ public class EntityPoodle extends EntityDog {
 			if (this.getOwner().getUniqueID().equals(player.getUniqueID())) {
 				if (stack.getItem().equals(Item.itemRegistry.getObject("dye"))) {
 					
-					this.dataWatcher.updateObject(22, 15 - stack.getItemDamage());
+					int color = 15 - stack.getItemDamage();
+					if (color != getColor()) {
+						
+						setColor(color);
+						
+						if (!player.capabilities.isCreativeMode) {
+							
+							stack.stackSize--;
+						}
+					}
 					return true;
 				}
 			}
