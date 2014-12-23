@@ -12,6 +12,7 @@ public class EntityAIFollowOwnerLeashed extends EntityAIFollowOwner
 			double p_i1625_2_, float p_i1625_4_, float p_i1625_5_)
 	{
 		super(dog, p_i1625_2_, p_i1625_4_, p_i1625_5_);
+		setMutexBits(3);
 		this.dog = dog;
 	}
 

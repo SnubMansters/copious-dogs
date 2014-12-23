@@ -61,7 +61,6 @@ public class EntityAIEatDogDish extends EntityAIBase
 		if (dog.getDistance(dish.xCoord, dish.yCoord, dish.zCoord) < 2f && dog.getNavigator().noPath())
 		{
 			
-			System.out.println("1f");
 			dog.getNavigator().clearPathEntity();
 			dog.setEating(true);
 			dog.getLookHelper().setLookPosition(dish.xCoord + 0.5f, dish.yCoord - 1f, dish.zCoord + 0.5f, 10F, dog.getVerticalFaceSpeed());

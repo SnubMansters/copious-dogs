@@ -40,7 +40,6 @@ import com.github.copiousdogs.entity.ai.EntityAIMateNearTorch;
 import com.github.copiousdogs.entity.ai.EntityAIOwnerHurtByTargetBOA;
 import com.github.copiousdogs.entity.ai.EntityAIOwnerHurtTargetBOA;
 import com.github.copiousdogs.entity.ai.EntityAIPanicBOA;
-import com.github.copiousdogs.entity.ai.EntityAIReturnToOwner;
 import com.github.copiousdogs.entity.ai.EntityAITargetNonTamedBOA;
 import com.github.copiousdogs.entity.ai.EntityAIWanderBOE;
 import com.github.copiousdogs.handler.ConfigurationHandler;
